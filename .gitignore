@@ -1,0 +1,6 @@
+rst/
+_templates/
+_build/
+src/__pycache__/
+README.html
+tmp/
