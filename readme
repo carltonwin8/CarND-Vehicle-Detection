@@ -14,9 +14,9 @@ if not os.path.exists(base):
 
 locals2net = [
     ['](_modules/',
-    '](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/'],
+    '](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/'],
     ['href="_modules/',
-    'href="http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/']
+    'href="https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/']
 ]
 
 with open(base) as f:

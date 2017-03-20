@@ -10,17 +10,17 @@ The project code is developed using the
 [spyder IDE](https://pythonhosted.org/spyder/)
 and is made up of the following files.
 
-  - [detect_vehicles.py](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/detect_vehicles.html) -
+  - [detect_vehicles.py](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/detect_vehicles.html) -
     The main vehicle detection module.
     The functions used to process various videos while varying some parameters.
-  - [gen_output.py](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/gen_output.html) -
+  - [gen_output.py](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/gen_output.html) -
     Script used during the development and debug phase for visualization
     and used to generate the images used for the documentation.
-  - [utils.py](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/utils.html)
+  - [utils.py](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/utils.html)
     and
-    [config.py](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/config.html)
+    [config.py](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/config.html)
     Utility procedures and setup information.
-  - [lesson_functions.py](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/lesson_functions.html) -
+  - [lesson_functions.py](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/lesson_functions.html) -
     Module containing procedures provide in the
     [Udacity Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)
     lecture notes.
@@ -50,19 +50,19 @@ The following
 # Histogram of Oriented Gradients (HOG)
 
 The
-[get_hog_features](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/lesson_functions.html#get_hog_features)
+[get_hog_features](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/lesson_functions.html#get_hog_features)
 function was called in order to generate the HOG images for the
 for one of each of the `vehicle` and `non-vehicle` classes.
 The
-[select_example_images](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/gen_output.html#select_example_images)
+[select_example_images](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/gen_output.html#select_example_images)
 function was use to select the middle images from the small training data set
 in order to get a feel for what the `skimage.hog()` output looks like.
 The
-[gen_hog](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/gen_output.html#gen_hog)
+[gen_hog](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/gen_output.html#gen_hog)
 function called the
-[get_hog_features](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/lesson_functions.html#get_hog_features)
+[get_hog_features](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/lesson_functions.html#get_hog_features)
 function, noted above, with the default values show in the
-[params.hog](http://carltonwin8.github.io/CarND-Vehicle-Dection/_modules/config.html#params.hog)
+[params.hog](https://carltonwin8.github.io/CarND-Vehicle-Detection/_modules/config.html#params.hog)
 configuration.
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:

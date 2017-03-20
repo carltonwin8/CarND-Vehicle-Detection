@@ -7,10 +7,10 @@ import os
 import glob
 import matplotlib.image as mpimg
 import numpy as np
-import cv2
 import config
 
 def get_image_fns(base_dirs):
+    """Get image filenames from a directory set"""
     images = []
     
     for base_dir in base_dirs:
@@ -30,7 +30,16 @@ def get_image_fns(base_dirs):
             
     return cars, notcars
 
+def get_example_fns():
+    """Get image files name based on configuration"""
+    if config.train_big:            
+        cars, notcars = get_image_fns(config.large_img_set)
+    else:
+        cars, notcars = get_image_fns(config.small_img_set)
+    return cars, notcars
+
 def get_example_out_fn(img):
+    """Creates an output filename based on an input filename"""
     imgs = img.split("/")
     fn = "_".join([imgs[-3],imgs[-2],imgs[-1]])
     out_fn = os.path.join(config.output_dir, fn)
@@ -45,11 +54,14 @@ def store_example_image(imgs):
     mpimg.imsave(fn, image)
 
 def store_example_images(cars, notcars):
+    """Saves the middle image of cars and notcars"""
     store_example_image(cars)
     store_example_image(notcars)
-    
+
 def print_img_info(img):
+    """Prints some information about an image"""
     print(img.shape, type(img), np.max(img), np.min(img))
 
 def scale_img(img):
+    """Scales an image to full scale values"""
     return (img*255/np.max(img)).astype(int)
