@@ -46,7 +46,7 @@ The following steps are done to complete this project.
     and also on
     [project_video.mp4](project_video.mp4)
 
-The following
+
 # Histogram of Oriented Gradients (HOG)
 
 The
@@ -67,20 +67,30 @@ configuration.
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
-| Car | Not Car | Car HOG | Not Car HOG
-|:---:|:---:|:---:|:---:|
-| ![](output_images/vehicles_smallset_cars1_183.jpeg) | ![](output_images/non-vehicles_smallset_notcars1_extra511.jpeg) | ![](output_images/vehicles_smallset_cars1_183_hog.jpeg) | ![](output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg) |
+<table width="100%">
+<tr width="100%">
+  <th align="center">Car</th>
+  <th align="center">Car HOG</th>
+  <th align="center">Not Car</th>
+  <th align="center">Not Car HOG</th>
+</tr>
+<tr width="100%">
+  <td width="23%"><img src="output_images/vehicles_smallset_cars1_183.jpeg" width="100%" ></td>
+  <td width="23%"><img src="output_images/vehicles_smallset_cars1_183_hog.jpeg" width="100%"></td>
+  <td width="23%"><img src="output_images/non-vehicles_smallset_notcars1_extra511.jpeg" width="100%"></td>
+  <td width="23%"><img src="output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg" width="100%"></td>
+</tr>
+</table>
 
 I started by reading in all the `vehicle` and `non-vehicle` images.
 I then explored different color spaces and different `skimage.hog()`
 parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).
 
-
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried various combinations of parameters and...
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I trained a linear SVM using...
 
@@ -130,3 +140,8 @@ Here's an example result showing the heatmap from a series of frames of video, t
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+
+## CJ Notes To add
+
+ - Did not make use small boxes for scanning for cars because that
+   means they are far away and are not a immediate concern

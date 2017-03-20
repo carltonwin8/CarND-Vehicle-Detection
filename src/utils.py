@@ -8,6 +8,7 @@ import glob
 import matplotlib.image as mpimg
 import numpy as np
 import config
+import pickle
 
 def get_image_fns(base_dirs):
     """Get image filenames from a directory set"""
@@ -65,3 +66,37 @@ def print_img_info(img):
 def scale_img(img):
     """Scales an image to full scale values"""
     return (img*255/np.max(img)).astype(int)
+
+def save_trained_svm(svc, X_scaler):
+    
+    pkl = {}
+    pkl["svc"] = svc
+    pkl["X_scaler"] = X_scaler
+    pickle.dump(pkl, open(config.trained_svm_fn(), "wb"))
+     
+def load_trained_svm():
+    pkl = pickle.load(open(config.trained_svm_fn(), "rb"))
+    return pkl["svc"], pkl["X_scaler"]
+
+
+class car():
+    def __init__(self, img, car, y_top, x, y):
+        self.img = img
+        self.car = car
+        self.y_top = y_top
+        self.x = x
+        self.y = y
+        
+class car_analysis():
+    """Analysis of car size measure on test images"""
+    def __init__(self):
+        self.cars = [car(1, 1, 407, 134, 88),
+                     car(1, 2, 402, 224, 109),
+                     car(2, 1, 411, 18, 16),
+                     car(3, 2, 413, 94, 56),
+                     car(4, 1, 407, 134, 90),
+                     car(4, 2, 397, 219, 106),
+                     car(5, 1, 405, 129, 82),
+                     car(5, 2, 397, 201, 121),
+                     car(6, 1, 408, 138, 93),
+                     car(6, 2, 404, 196, 97)]

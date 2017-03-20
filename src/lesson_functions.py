@@ -16,6 +16,7 @@ from sklearn.preprocessing import StandardScaler
 # for scikit-learn >= 0.18 use:
 # from sklearn.model_selection import train_test_split
 from sklearn.cross_validation import train_test_split
+from sklearn.metrics import accuracy_score
 
 def get_hog_features(img, orient, pix_per_cell, cell_per_block,
                         vis=False, feature_vec=True):
@@ -83,6 +84,9 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                 feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)
         else: feature_image = np.copy(image)
 
+        if np.max(feature_image) > 2: # assume it is 0-255 and not 0-1
+            feature_image = feature_image.astype(np.float32)/255
+            
         if spatial_feat == True:
             spatial_features = bin_spatial(feature_image, size=spatial_size)
             file_features.append(spatial_features)
@@ -295,6 +299,7 @@ def train_svm(cars,
     
     print('Using:',orient,'orientations',pix_per_cell,
         'pixels per cell and', cell_per_block,'cells per block')
+    print('Training Set:', len(X_train))
     print('Feature vector length:', len(X_train[0]))
     # Use a linear SVC 
     svc = LinearSVC()
@@ -302,7 +307,9 @@ def train_svm(cars,
     t=time.time()
     svc.fit(X_train, y_train)
     t2 = time.time()
-    print(round(t2-t, 2), 'Seconds to train SVC...')    
+    print(round(t2-t, 2), 'Seconds to train SVC...')
+    prediction = svc.predict(X_test)
+    print('The accuracy is {}.'.format(accuracy_score(prediction, y_test)))
     return svc, X_scaler
 
 def detect_cars_in_image(image,
@@ -320,18 +327,19 @@ def detect_cars_in_image(image,
                         hog_feat = True, # HOG features on or off 
                         y_start_stop = [400, 650]): # Min and max in y to search in slide_window()
                             
-    draw_image = np.copy(image)
     
     # Uncomment the following line if you extracted training
     # data from .png images (scaled 0 to 1 by mpimg) and the
     # image you are searching is a .jpg (scaled 0 to 255)
-    #image = image.astype(np.float32)/255
-    xy_window = (96, 96)
-    xy_window = (200, 200)
+    if np.max(image) > 2: # assume jpg
+        image = image.astype(np.float32)/255
+    xy_windows = [(100, 100), (150, 150)]
     xy_overlap=(0.5, 0.5)
     xy_overlap=(0.8, 0.8)
-    windows = slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop, 
-                        xy_window=xy_window, xy_overlap=xy_overlap)
+    windows = []
+    for xy_window in xy_windows:
+     windows.extend(slide_window(image, x_start_stop=[None, None], y_start_stop=y_start_stop, 
+                        xy_window=xy_window, xy_overlap=xy_overlap))
     
     hot_windows = search_windows(image, windows, svc, X_scaler, color_space=color_space, 
                             spatial_size=spatial_size, hist_bins=hist_bins, 
@@ -340,5 +348,4 @@ def detect_cars_in_image(image,
                             hog_channel=hog_channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)                       
     
-    window_img = draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)                    
-    return window_img
+    return hot_windows

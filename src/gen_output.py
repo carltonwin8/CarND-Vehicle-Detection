@@ -12,6 +12,8 @@ import utils
 import config
 import lesson_functions as lf
 import cv2
+import time
+import numpy as np
 
 def select_example_images(execute):
     """Selects and example image to work with"""
@@ -49,16 +51,37 @@ def gen_hog(execute, show=True, save=False):
                 img_out = img[1]
                 cv2.imwrite(img_out, utils.scale_img(hog_image))
                 
-def train_svm(execute, show=True, save=False):
+def train_svm(execute):
     """Traines the SVM"""
     if not execute:
         return
     
     cars, notcars = utils.get_example_fns()
+    lc, lnc = len(cars), len(notcars)
+    print('{} cars + {} not cars = {} images'.format(lc, lnc, lc + lnc))
+    t=time.time()
     svc, X_scaler = lf.train_svm(cars, notcars)
-    image = mpimg.imread('../../bbox-example-image.jpg')
-    window_img = lf.detect_cars_in_image(image, svc, X_scaler)    
-    plt.imshow(window_img)
+    t2 = time.time()
+    print('{} Seconds to read {} images'.format(round(t2-t, 2), len(cars) + len(notcars)),
+          ', extract & scale features and train the SVC')
+    utils.save_trained_svm(svc, X_scaler)
+        
+def process_images(execute, show=True, save=False):
+    """Searches for cars in images"""
+    svc, X_scaler = utils.load_trained_svm()
+    t2=time.time()
+    imgfns = config.get_images(8)
+    for imgfn in imgfns:
+        print(imgfn)
+        image = mpimg.imread(imgfn)
+        hot_windows = lf.detect_cars_in_image(image, svc, X_scaler)
+        if show:
+            draw_image = np.copy(image)
+            window_img = lf.draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
+            plt.imshow(window_img)
+            plt.show()
+    t3 = time.time()
+    print('{} Seconds to process {} images'.format(round(t3-t2, 2), len(imgfns)))    
 
 def main():
     """
@@ -66,7 +89,8 @@ def main():
     """
     select_example_images(False)
     gen_hog(False, save=True, show=False)    
-    train_svm(True)
+    train_svm(False)
+    process_images(True, show=True)
     
 if __name__ == "__main__":
     main()
