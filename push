@@ -5,4 +5,6 @@ if [ ! -d /tmp/cjAll ]; then
 fi
 
 rsync -az _build/html/ /tmp/cjAll/html/
+rsync -az output_images/ /tmp/cjAll/html/output_images/
+rsync -az test_images/ /tmp/cjAll/html/test_images/
 cp pull /tmp/cjAll/html/pull
