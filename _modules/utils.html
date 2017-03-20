@@ -53,6 +53,7 @@
 <span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mpimg</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 
 <div class="viewcode-block" id="get_image_fns"><a class="viewcode-back" href="../rst/utils.html#utils.get_image_fns">[docs]</a><span class="k">def</span> <span class="nf">get_image_fns</span><span class="p">(</span><span class="n">base_dirs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get image filenames from a directory set&quot;&quot;&quot;</span>
@@ -110,6 +111,40 @@
 <div class="viewcode-block" id="scale_img"><a class="viewcode-back" href="../rst/utils.html#utils.scale_img">[docs]</a><span class="k">def</span> <span class="nf">scale_img</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Scales an image to full scale values&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">img</span><span class="o">*</span><span class="mi">255</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="save_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.save_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">save_trained_svm</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">):</span>
+    
+    <span class="n">pkl</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;svc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">svc</span>
+    <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;X_scaler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_scaler</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pkl</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">trained_svm_fn</span><span class="p">(),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span></div>
+     
+<div class="viewcode-block" id="load_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.load_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">load_trained_svm</span><span class="p">():</span>
+    <span class="n">pkl</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">trained_svm_fn</span><span class="p">(),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;svc&quot;</span><span class="p">],</span> <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;X_scaler&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="car"><a class="viewcode-back" href="../rst/utils.html#utils.car">[docs]</a><span class="k">class</span> <span class="nc">car</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">car</span><span class="p">,</span> <span class="n">y_top</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">img</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">car</span> <span class="o">=</span> <span class="n">car</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_top</span> <span class="o">=</span> <span class="n">y_top</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span></div>
+        
+<div class="viewcode-block" id="car_analysis"><a class="viewcode-back" href="../rst/utils.html#utils.car_analysis">[docs]</a><span class="k">class</span> <span class="nc">car_analysis</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Analysis of car size measure on test images&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cars</span> <span class="o">=</span> <span class="p">[</span><span class="n">car</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">407</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">88</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">402</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">109</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">411</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">413</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">407</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">397</span><span class="p">,</span> <span class="mi">219</span><span class="p">,</span> <span class="mi">106</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">405</span><span class="p">,</span> <span class="mi">129</span><span class="p">,</span> <span class="mi">82</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">397</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">121</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">408</span><span class="p">,</span> <span class="mi">138</span><span class="p">,</span> <span class="mi">93</span><span class="p">),</span>
+                     <span class="n">car</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">97</span><span class="p">)]</span></div>
 </pre></div>
 
       </div>

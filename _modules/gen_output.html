@@ -57,6 +57,8 @@
 <span class="kn">import</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">lesson_functions</span> <span class="k">as</span> <span class="nn">lf</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="select_example_images"><a class="viewcode-back" href="../rst/gen_output.html#gen_output.select_example_images">[docs]</a><span class="k">def</span> <span class="nf">select_example_images</span><span class="p">(</span><span class="n">execute</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Selects and example image to work with&quot;&quot;&quot;</span>
@@ -94,16 +96,37 @@
                 <span class="n">img_out</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">img_out</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">scale_img</span><span class="p">(</span><span class="n">hog_image</span><span class="p">))</span></div>
                 
-<div class="viewcode-block" id="train_svm"><a class="viewcode-back" href="../rst/gen_output.html#gen_output.train_svm">[docs]</a><span class="k">def</span> <span class="nf">train_svm</span><span class="p">(</span><span class="n">execute</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="train_svm"><a class="viewcode-back" href="../rst/gen_output.html#gen_output.train_svm">[docs]</a><span class="k">def</span> <span class="nf">train_svm</span><span class="p">(</span><span class="n">execute</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Traines the SVM&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">execute</span><span class="p">:</span>
         <span class="k">return</span>
     
     <span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_example_fns</span><span class="p">()</span>
+    <span class="n">lc</span><span class="p">,</span> <span class="n">lnc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cars</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">notcars</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cars + </span><span class="si">{}</span><span class="s1"> not cars = </span><span class="si">{}</span><span class="s1"> images&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lc</span><span class="p">,</span> <span class="n">lnc</span><span class="p">,</span> <span class="n">lc</span> <span class="o">+</span> <span class="n">lnc</span><span class="p">))</span>
+    <span class="n">t</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">train_svm</span><span class="p">(</span><span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;../../bbox-example-image.jpg&#39;</span><span class="p">)</span>
-    <span class="n">window_img</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">detect_cars_in_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">)</span>    
-    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">window_img</span><span class="p">)</span></div>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> Seconds to read </span><span class="si">{}</span><span class="s1"> images&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">cars</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">notcars</span><span class="p">)),</span>
+          <span class="s1">&#39;, extract &amp; scale features and train the SVC&#39;</span><span class="p">)</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">save_trained_svm</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="process_images"><a class="viewcode-back" href="../rst/gen_output.html#gen_output.process_images">[docs]</a><span class="k">def</span> <span class="nf">process_images</span><span class="p">(</span><span class="n">execute</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Searches for cars in images&quot;&quot;&quot;</span>
+    <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_trained_svm</span><span class="p">()</span>
+    <span class="n">t2</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">imgfns</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_images</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">imgfn</span> <span class="ow">in</span> <span class="n">imgfns</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">imgfn</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">imgfn</span><span class="p">)</span>
+        <span class="n">hot_windows</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">detect_cars_in_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">draw_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">window_img</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">draw_boxes</span><span class="p">(</span><span class="n">draw_image</span><span class="p">,</span> <span class="n">hot_windows</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thick</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">window_img</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> Seconds to process </span><span class="si">{}</span><span class="s1"> images&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t3</span><span class="o">-</span><span class="n">t2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">imgfns</span><span class="p">)))</span>    </div>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../rst/gen_output.html#gen_output.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -111,7 +134,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">select_example_images</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">gen_hog</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>    
-    <span class="n">train_svm</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="n">train_svm</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">process_images</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>

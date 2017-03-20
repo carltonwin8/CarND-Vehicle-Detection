@@ -115,8 +115,6 @@ and also on
 </li>
 </ul>
 
-<p>The following</p>
-
 <h1>
 <a id="user-content-histogram-of-oriented-gradients-hog" class="anchor" href="#histogram-of-oriented-gradients-hog" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Histogram of Oriented Gradients (HOG)</h1>
 
@@ -138,23 +136,19 @@ configuration.</p>
 
 <p>Here is an example using the <code>YCrCb</code> color space and HOG parameters of <code>orientations=8</code>, <code>pixels_per_cell=(8, 8)</code> and <code>cells_per_block=(2, 2)</code>:</p>
 
-<table>
-<thead>
-<tr>
-<th align="center">Car</th>
-<th align="center">Not Car</th>
-<th align="center">Car HOG</th>
-<th align="center">Not Car HOG</th>
+<table width="100%">
+<tr width="100%">
+  <th align="center">Car</th>
+  <th align="center">Car HOG</th>
+  <th align="center">Not Car</th>
+  <th align="center">Not Car HOG</th>
 </tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><a href="output_images/vehicles_smallset_cars1_183.jpeg" target="_blank"><img src="output_images/vehicles_smallset_cars1_183.jpeg" alt="" style="max-width:100%;"></a></td>
-<td align="center"><a href="output_images/non-vehicles_smallset_notcars1_extra511.jpeg" target="_blank"><img src="output_images/non-vehicles_smallset_notcars1_extra511.jpeg" alt="" style="max-width:100%;"></a></td>
-<td align="center"><a href="output_images/vehicles_smallset_cars1_183_hog.jpeg" target="_blank"><img src="output_images/vehicles_smallset_cars1_183_hog.jpeg" alt="" style="max-width:100%;"></a></td>
-<td align="center"><a href="output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg" target="_blank"><img src="output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg" alt="" style="max-width:100%;"></a></td>
+<tr width="100%">
+  <td width="23%"><a href="output_images/vehicles_smallset_cars1_183.jpeg" target="_blank"><img src="output_images/vehicles_smallset_cars1_183.jpeg" width="100%" style="max-width:100%;"></a></td>
+  <td width="23%"><a href="output_images/vehicles_smallset_cars1_183_hog.jpeg" target="_blank"><img src="output_images/vehicles_smallset_cars1_183_hog.jpeg" width="100%" style="max-width:100%;"></a></td>
+  <td width="23%"><a href="output_images/non-vehicles_smallset_notcars1_extra511.jpeg" target="_blank"><img src="output_images/non-vehicles_smallset_notcars1_extra511.jpeg" width="100%" style="max-width:100%;"></a></td>
+  <td width="23%"><a href="output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg" target="_blank"><img src="output_images/non-vehicles_smallset_notcars1_extra511_hog.jpeg" width="100%" style="max-width:100%;"></a></td>
 </tr>
-</tbody>
 </table>
 
 <p>I started by reading in all the <code>vehicle</code> and <code>non-vehicle</code> images.
@@ -228,6 +222,14 @@ parameters (<code>orientations</code>, <code>pixels_per_cell</code>, and <code>c
 <a id="user-content-1-briefly-discuss-any-problems--issues-you-faced-in-your-implementation-of-this-project--where-will-your-pipeline-likely-fail--what-could-you-do-to-make-it-more-robust" class="anchor" href="#1-briefly-discuss-any-problems--issues-you-faced-in-your-implementation-of-this-project--where-will-your-pipeline-likely-fail--what-could-you-do-to-make-it-more-robust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?</h4>
 
 <p>Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  </p>
+
+<h2>
+<a id="user-content-cj-notes-to-add" class="anchor" href="#cj-notes-to-add" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CJ Notes To add</h2>
+
+<ul>
+<li>Did not make use small boxes for scanning for cars because that
+means they are far away and are not a immediate concern</li>
+</ul>
 
               </article>
             </div>

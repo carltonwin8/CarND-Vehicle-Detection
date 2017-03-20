@@ -61,6 +61,7 @@
 <span class="c1"># for scikit-learn &gt;= 0.18 use:</span>
 <span class="c1"># from sklearn.model_selection import train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">accuracy_score</span>
 
 <div class="viewcode-block" id="get_hog_features"><a class="viewcode-back" href="../rst/lesson_functions.html#lesson_functions.get_hog_features">[docs]</a><span class="k">def</span> <span class="nf">get_hog_features</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">orient</span><span class="p">,</span> <span class="n">pix_per_cell</span><span class="p">,</span> <span class="n">cell_per_block</span><span class="p">,</span>
                         <span class="n">vis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">feature_vec</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -128,6 +129,9 @@
                 <span class="n">feature_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_RGB2YCrCb</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span> <span class="n">feature_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">feature_image</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># assume it is 0-255 and not 0-1</span>
+            <span class="n">feature_image</span> <span class="o">=</span> <span class="n">feature_image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span>
+            
         <span class="k">if</span> <span class="n">spatial_feat</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">spatial_features</span> <span class="o">=</span> <span class="n">bin_spatial</span><span class="p">(</span><span class="n">feature_image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">spatial_size</span><span class="p">)</span>
             <span class="n">file_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spatial_features</span><span class="p">)</span>
@@ -340,6 +344,7 @@
     
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Using:&#39;</span><span class="p">,</span><span class="n">orient</span><span class="p">,</span><span class="s1">&#39;orientations&#39;</span><span class="p">,</span><span class="n">pix_per_cell</span><span class="p">,</span>
         <span class="s1">&#39;pixels per cell and&#39;</span><span class="p">,</span> <span class="n">cell_per_block</span><span class="p">,</span><span class="s1">&#39;cells per block&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training Set:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Feature vector length:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="c1"># Use a linear SVC </span>
     <span class="n">svc</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">()</span>
@@ -347,7 +352,9 @@
     <span class="n">t</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
     <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;Seconds to train SVC...&#39;</span><span class="p">)</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;Seconds to train SVC...&#39;</span><span class="p">)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The accuracy is </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span></div>
 
 <div class="viewcode-block" id="detect_cars_in_image"><a class="viewcode-back" href="../rst/lesson_functions.html#lesson_functions.detect_cars_in_image">[docs]</a><span class="k">def</span> <span class="nf">detect_cars_in_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
@@ -365,18 +372,19 @@
                         <span class="n">hog_feat</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># HOG features on or off </span>
                         <span class="n">y_start_stop</span> <span class="o">=</span> <span class="p">[</span><span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">]):</span> <span class="c1"># Min and max in y to search in slide_window()</span>
                             
-    <span class="n">draw_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     
     <span class="c1"># Uncomment the following line if you extracted training</span>
     <span class="c1"># data from .png images (scaled 0 to 1 by mpimg) and the</span>
     <span class="c1"># image you are searching is a .jpg (scaled 0 to 255)</span>
-    <span class="c1">#image = image.astype(np.float32)/255</span>
-    <span class="n">xy_window</span> <span class="o">=</span> <span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="mi">96</span><span class="p">)</span>
-    <span class="n">xy_window</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># assume jpg</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span>
+    <span class="n">xy_windows</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">)]</span>
     <span class="n">xy_overlap</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
     <span class="n">xy_overlap</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
-    <span class="n">windows</span> <span class="o">=</span> <span class="n">slide_window</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x_start_stop</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">y_start_stop</span><span class="o">=</span><span class="n">y_start_stop</span><span class="p">,</span> 
-                        <span class="n">xy_window</span><span class="o">=</span><span class="n">xy_window</span><span class="p">,</span> <span class="n">xy_overlap</span><span class="o">=</span><span class="n">xy_overlap</span><span class="p">)</span>
+    <span class="n">windows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">xy_window</span> <span class="ow">in</span> <span class="n">xy_windows</span><span class="p">:</span>
+     <span class="n">windows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">slide_window</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x_start_stop</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">y_start_stop</span><span class="o">=</span><span class="n">y_start_stop</span><span class="p">,</span> 
+                        <span class="n">xy_window</span><span class="o">=</span><span class="n">xy_window</span><span class="p">,</span> <span class="n">xy_overlap</span><span class="o">=</span><span class="n">xy_overlap</span><span class="p">))</span>
     
     <span class="n">hot_windows</span> <span class="o">=</span> <span class="n">search_windows</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">,</span> <span class="n">color_space</span><span class="o">=</span><span class="n">color_space</span><span class="p">,</span> 
                             <span class="n">spatial_size</span><span class="o">=</span><span class="n">spatial_size</span><span class="p">,</span> <span class="n">hist_bins</span><span class="o">=</span><span class="n">hist_bins</span><span class="p">,</span> 
@@ -385,8 +393,7 @@
                             <span class="n">hog_channel</span><span class="o">=</span><span class="n">hog_channel</span><span class="p">,</span> <span class="n">spatial_feat</span><span class="o">=</span><span class="n">spatial_feat</span><span class="p">,</span> 
                             <span class="n">hist_feat</span><span class="o">=</span><span class="n">hist_feat</span><span class="p">,</span> <span class="n">hog_feat</span><span class="o">=</span><span class="n">hog_feat</span><span class="p">)</span>                       
     
-    <span class="n">window_img</span> <span class="o">=</span> <span class="n">draw_boxes</span><span class="p">(</span><span class="n">draw_image</span><span class="p">,</span> <span class="n">hot_windows</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thick</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>                    
-    <span class="k">return</span> <span class="n">window_img</span></div>
+    <span class="k">return</span> <span class="n">hot_windows</span></div>
 </pre></div>
 
       </div>
