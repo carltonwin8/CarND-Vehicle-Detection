@@ -33,8 +33,8 @@ The Y location is the top of the box. Size is width x height.
 |  4  | 2 | 397 | 219x106 | |
 |  5  | 1 | 405 | 129x82 | |
 |  5  | 2 | 397 | 201x121 | |
-|  5  | 1 | 408 | 138x93 | |
-|  5  | 2 | 404 | 196x97 | |
+|  6  | 1 | 408 | 138x93 | |
+|  6  | 2 | 404 | 196x97 | |
 
 ## TO DO
  - verify that during training the images are scaled correctly

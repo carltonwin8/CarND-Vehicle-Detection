@@ -13,7 +13,6 @@ import config
 import lesson_functions as lf
 import cv2
 import time
-import numpy as np
 
 def select_example_images(execute):
     """Selects and example image to work with"""
@@ -74,12 +73,23 @@ def process_images(execute, show=True, save=False):
     for imgfn in imgfns:
         print(imgfn)
         image = mpimg.imread(imgfn)
-        hot_windows = lf.detect_cars_in_image(image, svc, X_scaler)
+        cars = lf.get_cars(image, svc, X_scaler, heat_only=True)
+#        hot_windows = lf.detect_cars_in_image(image, svc, X_scaler)
+#        threshold = 4
+#        heatmap, labels = lf.heat_map(image, hot_windows, threshold)
         if show:
-            draw_image = np.copy(image)
-            window_img = lf.draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
-            plt.imshow(window_img)
+            plt.imshow(cars)
             plt.show()
+            
+#            draw_image = np.copy(image)
+#            window_img = lf.draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
+#            plt.imshow(window_img)
+#            plt.show()
+#            draw_img = lf.draw_labeled_bboxes(draw_image, labels)
+#            plt.imshow(draw_img)
+#            plt.show()
+            
+
     t3 = time.time()
     print('{} Seconds to process {} images'.format(round(t3-t2, 2), len(imgfns)))    
 

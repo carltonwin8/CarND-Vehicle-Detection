@@ -9,6 +9,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import config
 import pickle
+import lesson_functions as lf
 
 def get_image_fns(base_dirs):
     """Get image filenames from a directory set"""
@@ -100,3 +101,15 @@ class car_analysis():
                      car(5, 2, 397, 201, 121),
                      car(6, 1, 408, 138, 93),
                      car(6, 2, 404, 196, 97)]
+
+def get_video_out(v_in):
+    return config.video_out_dir + v_in.split('/')[-1]
+
+class detect():
+    def __init__(self, heat_only):
+            self.svc, self.X_scaler = load_trained_svm()
+            self.heat_only = heat_only
+
+    def cars(self, img):
+        return lf.get_cars(img, self.svc, self.X_scaler, heat_only=self.heat_only)
+    
