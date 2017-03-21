@@ -10,6 +10,7 @@ import numpy as np
 import config
 import pickle
 import lesson_functions as lf
+import time
 
 def get_image_fns(base_dirs):
     """Get image filenames from a directory set"""
@@ -32,13 +33,13 @@ def get_image_fns(base_dirs):
             
     return cars, notcars
 
-def get_example_fns():
+def get_example_fns(train_big):
     """Get image files name based on configuration"""
-    if config.train_big:            
-        cars, notcars = get_image_fns(config.large_img_set)
+    if train_big:            
+        img_set = config.large_img_set
     else:
-        cars, notcars = get_image_fns(config.small_img_set)
-    return cars, notcars
+        img_set = config.small_img_set
+    return get_image_fns(img_set)
 
 def get_example_out_fn(img):
     """Creates an output filename based on an input filename"""
@@ -68,15 +69,15 @@ def scale_img(img):
     """Scales an image to full scale values"""
     return (img*255/np.max(img)).astype(int)
 
-def save_trained_svm(svc, X_scaler):
+def save_trained_svm(trained_svm_fn, svc, X_scaler):
     
     pkl = {}
     pkl["svc"] = svc
     pkl["X_scaler"] = X_scaler
-    pickle.dump(pkl, open(config.trained_svm_fn(), "wb"))
+    pickle.dump(pkl, open(trained_svm_fn, "wb"))
      
-def load_trained_svm():
-    pkl = pickle.load(open(config.trained_svm_fn(), "rb"))
+def load_trained_svm(trained_svm_fn):
+    pkl = pickle.load(open(trained_svm_fn, "rb"))
     return pkl["svc"], pkl["X_scaler"]
 
 
@@ -112,4 +113,41 @@ class detect():
 
     def cars(self, img):
         return lf.get_cars(img, self.svc, self.X_scaler, heat_only=self.heat_only)
+
+class time_log():
+    def __init__(self,tlog):
+        self.tlog = tlog
+    def time(self):        
+        t = time.time()
+        self.tlog.append(t)
+        return t
     
+def gen_trained_sets(train_big):
+    tlog = []
+    tl = time_log(tlog)
+    t1 = tl.time()
+    spatial_size_and_hist_bins = [16, 32]
+    hog_channels = [0, 1, 2, 3] # where 4 is all chanels.
+    colors = ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]
+    cars, not_cars = get_example_fns(train_big)
+    print('Training on data set big is {}'.format(train_big))
+    for ssahb in spatial_size_and_hist_bins:
+        for hog_channel in hog_channels:
+            for color in colors:
+                print('big {}, {} car & {} not cars, trained for ssahb{}, hogc{} for {}'.format(train_big,
+                      len(cars), len(not_cars), ssahb, hog_channel, color))
+                hc = hog_channel if hog_channel < 3 else "ALL"
+                t3 = tl.time()
+                svc, X_scaler = lf.train_svm(cars, not_cars, color_space=color, 
+                                             hog_channel=hc, hist_bins=ssahb,
+                                             spatial_size=(ssahb,ssahb))
+                t4 = tl.time()
+                tfnp = '_ssahb{}_hc{}_{}.p'.format(ssahb, hog_channel, color)
+                tfn = 'b' + tfnp if train_big else 's' + tfnp
+                print('{} generated in {} seconds'.format(tfn, round(t4-t3, 0)))
+                fn = config.train_dir + tfn
+                save_trained_svm(fn, svc, X_scaler)
+
+    t5 = tl.time()
+    print('Total time {} seconds'.format(train_big, round(t5-t1, 0)))
+    print(tl.tlog)

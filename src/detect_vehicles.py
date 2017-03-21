@@ -10,17 +10,17 @@ import argparse
 import config
 from moviepy.editor import VideoFileClip
 
-def main():
-    """
-    Main vehicle detection function
-    """
-    parser = argparse.ArgumentParser(description='Process video file.')
-    parser.add_argument("videos", help="video sequence",type=int, nargs='?', const=1, default=1)
-    args = parser.parse_args()
-    
+
+def video(args):
+    """video detection function"""
+
     videos_in = config.get_videos(args.videos)
     detect = utils.detect(True)
     
+    print(args)
+    print('End Video')
+    return
+
     for video_in in videos_in:
         video_out = utils.get_video_out(video_in)
         print("From =>", video_in, "To =>", video_out)
@@ -28,6 +28,30 @@ def main():
         clip2 = VideoFileClip(video_in)
         clip = clip2.fl_image(detect.cars)
         clip.write_videofile(video_out, audio=False)
+
+def train(args):
+    """train the classifiers"""
+    utils.gen_trained_sets(args.big)
+
+def main():
+    """Main vehicle detection function"""
+    parser = argparse.ArgumentParser(description='Process video file or train svm.')
+    subparsers = parser.add_subparsers(help='Process video file')
+
+    parser_a = subparsers.add_parser('video', help='Video file processing seletion')
+    parser_a.add_argument('id', help="video sequence",type=int, nargs='?', const=1, default=1)
+    parser_a.set_defaults(func=video)
+
+    parser_a = subparsers.add_parser('train', help='train the classifier')
+    parser_a.add_argument('-b','--big', help="use the small data set if not provided", action="store_true")
+    parser_a.set_defaults(func=train)
+
+    args = parser.parse_args()
+    if len(vars(args)) == 0:
+        parser.print_help()
+        return
+    
+    args.func(args)
 
 if __name__ == "__main__":
     main()

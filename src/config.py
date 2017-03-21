@@ -86,6 +86,7 @@ small_img_set = ["../../non-vehicles_smallset", "../../vehicles_smallset"]
 large_img_set = ["../../non-vehicles", "../../vehicles"]
 
 output_dir = "../output_images/"
+train_dir = "../../training/"
 
 not_vehicle = "non-vehicles_smallset_notcars1_extra511.jpeg"
 vehicle = "vehicles_smallset_cars1_183.jpeg"
