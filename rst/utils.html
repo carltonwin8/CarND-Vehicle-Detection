@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils module &#8212; Vehicle Detection 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="lesson_functions module" href="lesson_functions.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>Vehicle Detection 1.0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>utils module</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="lesson_functions.html">lesson_functions module</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="module-utils">
+<span id="utils-module"></span><h1>utils module<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
+<p>&#64;author: Carlton Joseph</p>
+<dl class="class">
+<dt id="utils.car">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">car</code><span class="sig-paren">(</span><em>img</em>, <em>car</em>, <em>y_top</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#car"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.car" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.car_analysis">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">car_analysis</code><a class="reference internal" href="../_modules/utils.html#car_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.car_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Analysis of car size measure on test images</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.detect">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">detect</code><span class="sig-paren">(</span><em>heat_only</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="utils.detect.cars">
+<code class="descname">cars</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect.cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect.cars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.gen_trained_sets">
+<code class="descclassname">utils.</code><code class="descname">gen_trained_sets</code><span class="sig-paren">(</span><em>train_big</em>, <em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#gen_trained_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.gen_trained_sets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.get_example_fns">
+<code class="descclassname">utils.</code><code class="descname">get_example_fns</code><span class="sig-paren">(</span><em>train_big</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_example_fns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_example_fns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image files name based on configuration</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.get_example_out_fn">
+<code class="descclassname">utils.</code><code class="descname">get_example_out_fn</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_example_out_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_example_out_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an output filename based on an input filename</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.get_image_fns">
+<code class="descclassname">utils.</code><code class="descname">get_image_fns</code><span class="sig-paren">(</span><em>base_dirs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_image_fns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_image_fns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image filenames from a directory set</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.get_video_out">
+<code class="descclassname">utils.</code><code class="descname">get_video_out</code><span class="sig-paren">(</span><em>v_in</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_video_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_video_out" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.load_trained_svm">
+<code class="descclassname">utils.</code><code class="descname">load_trained_svm</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#load_trained_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.load_trained_svm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.print_img_info">
+<code class="descclassname">utils.</code><code class="descname">print_img_info</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#print_img_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.print_img_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints some information about an image</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.save_trained_svm">
+<code class="descclassname">utils.</code><code class="descname">save_trained_svm</code><span class="sig-paren">(</span><em>fn</em>, <em>svc</em>, <em>X_scaler</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#save_trained_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.save_trained_svm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.scale_img">
+<code class="descclassname">utils.</code><code class="descname">scale_img</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#scale_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.scale_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales an image to full scale values</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.store_example_image">
+<code class="descclassname">utils.</code><code class="descname">store_example_image</code><span class="sig-paren">(</span><em>imgs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#store_example_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.store_example_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the middle image out of a list of images</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.store_example_images">
+<code class="descclassname">utils.</code><code class="descname">store_example_images</code><span class="sig-paren">(</span><em>cars</em>, <em>notcars</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#store_example_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.store_example_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the middle image of cars and notcars</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.time_log">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">time_log</code><span class="sig-paren">(</span><em>tlog</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#time_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.time_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="utils.time_log.time">
+<code class="descname">time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#time_log.time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.time_log.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="lesson_functions.html">lesson_functions module</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Carlton Joseph.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

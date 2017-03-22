@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lesson_functions module &#8212; Vehicle Detection 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="utils module" href="utils.html" />
+    <link rel="prev" title="gen_output module" href="gen_output.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>Vehicle Detection 1.0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>lesson_functions module</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="gen_output.html">gen_output module</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="utils.html">utils module</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="module-lesson_functions">
+<span id="lesson-functions-module"></span><h1>lesson_functions module<a class="headerlink" href="#module-lesson_functions" title="Permalink to this headline">¶</a></h1>
+<p>This module contains procedures provide in the &#8220;Udacity Self-Driving Car Engineer
+Nanodegree&#8221; lecture notes.
+<a class="reference external" href="https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013">https://www.udacity.com/course/self-driving-car-engineer-nanodegree&#8211;nd013</a></p>
+<dl class="function">
+<dt id="lesson_functions.add_heat">
+<code class="descclassname">lesson_functions.</code><code class="descname">add_heat</code><span class="sig-paren">(</span><em>heatmap</em>, <em>bbox_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#add_heat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.add_heat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through list of bboxes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.apply_threshold">
+<code class="descclassname">lesson_functions.</code><code class="descname">apply_threshold</code><span class="sig-paren">(</span><em>heatmap</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#apply_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.apply_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero out pixels below the threshold</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.bin_spatial">
+<code class="descclassname">lesson_functions.</code><code class="descname">bin_spatial</code><span class="sig-paren">(</span><em>img</em>, <em>size=(32</em>, <em>32)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#bin_spatial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.bin_spatial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to compute binned color features</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.color_hist">
+<code class="descclassname">lesson_functions.</code><code class="descname">color_hist</code><span class="sig-paren">(</span><em>img</em>, <em>nbins=32</em>, <em>bins_range=(0</em>, <em>256)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#color_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.color_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to compute color histogram features</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.convert_color">
+<code class="descclassname">lesson_functions.</code><code class="descname">convert_color</code><span class="sig-paren">(</span><em>img</em>, <em>conv='RGB2YCrCb'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#convert_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.convert_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.detect_cars_in_image">
+<code class="descclassname">lesson_functions.</code><code class="descname">detect_cars_in_image</code><span class="sig-paren">(</span><em>image, svc, X_scaler, color_space='RGB', orient=9, pix_per_cell=8, cell_per_block=2, hog_channel=0, spatial_size=(16, 16), hist_bins=16, spatial_feat=True, hist_feat=True, hog_feat=True, y_start_stop=[400, 650]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#detect_cars_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.detect_cars_in_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.draw_boxes">
+<code class="descclassname">lesson_functions.</code><code class="descname">draw_boxes</code><span class="sig-paren">(</span><em>img</em>, <em>bboxes</em>, <em>color=(0</em>, <em>0</em>, <em>255)</em>, <em>thick=6</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#draw_boxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.draw_boxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to draw bounding boxes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.draw_labeled_bboxes">
+<code class="descclassname">lesson_functions.</code><code class="descname">draw_labeled_bboxes</code><span class="sig-paren">(</span><em>img</em>, <em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#draw_labeled_bboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.draw_labeled_bboxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through all detected cars</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.extract_features">
+<code class="descclassname">lesson_functions.</code><code class="descname">extract_features</code><span class="sig-paren">(</span><em>imgs</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.extract_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to extract features from a list of images</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.find_cars">
+<code class="descclassname">lesson_functions.</code><code class="descname">find_cars</code><span class="sig-paren">(</span><em>img</em>, <em>svc</em>, <em>X_scaler</em>, <em>ystart=400</em>, <em>ystop=650</em>, <em>scale=1</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#find_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.find_cars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.get_cars">
+<code class="descclassname">lesson_functions.</code><code class="descname">get_cars</code><span class="sig-paren">(</span><em>image</em>, <em>svc</em>, <em>X_scaler</em>, <em>heat_thres=4</em>, <em>heat_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#get_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.get_cars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.get_hog_features">
+<code class="descclassname">lesson_functions.</code><code class="descname">get_hog_features</code><span class="sig-paren">(</span><em>img</em>, <em>orient</em>, <em>pix_per_cell</em>, <em>cell_per_block</em>, <em>vis=False</em>, <em>feature_vec=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#get_hog_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.get_hog_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to return HOG features and visualization</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.heat_map">
+<code class="descclassname">lesson_functions.</code><code class="descname">heat_map</code><span class="sig-paren">(</span><em>image</em>, <em>box_list</em>, <em>threshold=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#heat_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.heat_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a heat map based box list and threshold</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.search_windows">
+<code class="descclassname">lesson_functions.</code><code class="descname">search_windows</code><span class="sig-paren">(</span><em>img</em>, <em>windows</em>, <em>clf</em>, <em>scaler</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>hist_range=(0</em>, <em>256)</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#search_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.search_windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function you will pass an image
+and the list of windows to be searched (output of slide_windows())</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.single_img_features">
+<code class="descclassname">lesson_functions.</code><code class="descname">single_img_features</code><span class="sig-paren">(</span><em>img</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#single_img_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.single_img_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function to extract features from a single image window
+This function is very similar to extract_features()
+just for a single image rather than list of images</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.slide_window">
+<code class="descclassname">lesson_functions.</code><code class="descname">slide_window</code><span class="sig-paren">(</span><em>img, x_start_stop=[None, None], y_start_stop=[None, None], xy_window=(64, 64), xy_overlap=(0.5, 0.5)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#slide_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.slide_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a function that takes an image,
+start and stop positions in both x and y,
+window size (x and y dimensions),
+and overlap fraction (for both x and y)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lesson_functions.train_svm">
+<code class="descclassname">lesson_functions.</code><code class="descname">train_svm</code><span class="sig-paren">(</span><em>cars</em>, <em>notcars</em>, <em>color_space='RGB'</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_size=(16</em>, <em>16)</em>, <em>hist_bins=16</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#train_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.train_svm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="gen_output.html">gen_output module</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="utils.html">utils module</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Carlton Joseph.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>
