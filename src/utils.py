@@ -69,17 +69,19 @@ def scale_img(img):
     """Scales an image to full scale values"""
     return (img*255/np.max(img)).astype(int)
 
-def save_trained_svm(trained_svm_fn, svc, X_scaler):
+def save_trained_svm(fn, svc, X_scaler):
     
     pkl = {}
     pkl["svc"] = svc
     pkl["X_scaler"] = X_scaler
-    pickle.dump(pkl, open(trained_svm_fn, "wb"))
+    pickle.dump(pkl, open(fn, "wb"))
      
-def load_trained_svm(trained_svm_fn):
-    pkl = pickle.load(open(trained_svm_fn, "rb"))
+def load_trained_svm(fn):
+    pkl = pickle.load(open(fn, "rb"))
     return pkl["svc"], pkl["X_scaler"]
 
+def get_video_out(v_in):
+    return config.video_out_dir + v_in.split('/')[-1]
 
 class car():
     def __init__(self, img, car, y_top, x, y):
@@ -103,9 +105,6 @@ class car_analysis():
                      car(6, 1, 408, 138, 93),
                      car(6, 2, 404, 196, 97)]
 
-def get_video_out(v_in):
-    return config.video_out_dir + v_in.split('/')[-1]
-
 class detect():
     def __init__(self, heat_only):
             self.svc, self.X_scaler = load_trained_svm()
@@ -122,16 +121,14 @@ class time_log():
         self.tlog.append(t)
         return t
     
-def gen_trained_sets(train_big):
+def gen_trained_sets(train_big, cfg):
     tlog = []
     tl = time_log(tlog)
     t1 = tl.time()
-    spatial_size_and_hist_bins = [16, 32]
-    hog_channels = [0, 1, 2, 3] # where 4 is all chanels.
-    colors = ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]
+    hog_channels, ssahbs, colors = config.get_hogc_ssahb_color(cfg)
     cars, not_cars = get_example_fns(train_big)
     print('Training on data set big is {}'.format(train_big))
-    for ssahb in spatial_size_and_hist_bins:
+    for ssahb in ssahbs:
         for hog_channel in hog_channels:
             for color in colors:
                 print('big {}, {} car & {} not cars, trained for ssahb{}, hogc{} for {}'.format(train_big,
@@ -149,5 +146,5 @@ def gen_trained_sets(train_big):
                 save_trained_svm(fn, svc, X_scaler)
 
     t5 = tl.time()
-    print('Total time {} seconds'.format(train_big, round(t5-t1, 0)))
+    print('Total time {} seconds'.format(round(t5-t1, 0)))
     print(tl.tlog)

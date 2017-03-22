@@ -26,29 +26,23 @@ def gen_hog(execute, show=True, save=False):
     if not execute:
         return
 
-    imgs = [(config.get_vehicle(), config.get_vehicle_hog()),
+    imgs = [(config.vehicle, config.get_vehicle_hog()),
             (config.get_not_vehicle(), config.get_not_vehicle_hog())]
     for img in imgs:
         img_in = mpimg.imread(img[0])
         image = cv2.cvtColor(img_in, cv2.COLOR_RGB2GRAY)
-        for params in config.params.hog():
-            orient, pix_per_cell, cell_per_block = params
-            features, hog_image = lf.get_hog_features(image,
-                                                      orient, 
-                                                      pix_per_cell, 
-                                                      cell_per_block,
-                                                      vis=True,
-                                                      feature_vec=False)
-            if show:
-                plt.subplot(121)
-                plt.imshow(image, cmap='gray')
-                plt.title('Example Image')
-                plt.subplot(122)
-                plt.imshow(hog_image, cmap='gray')
-                plt.title('HOG Visualization')
-            if save:
-                img_out = img[1]
-                cv2.imwrite(img_out, utils.scale_img(hog_image))
+        orient, pix_per_cell, cell_per_block = 9, 8, 2
+        features, hog_image = lf.get_hog_features(image,orient,pix_per_cell,cell_per_block)
+        if show:
+            plt.subplot(121)
+            plt.imshow(image, cmap='gray')
+            plt.title('Example Image')
+            plt.subplot(122)
+            plt.imshow(hog_image, cmap='gray')
+            plt.title('HOG Visualization')
+        if save:
+            img_out = img[1]
+            cv2.imwrite(img_out, utils.scale_img(hog_image))
                 
 def train_svm(execute):
     """Traines the SVM"""

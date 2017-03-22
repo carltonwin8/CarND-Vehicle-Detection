@@ -31,7 +31,7 @@ def video(args):
 
 def train(args):
     """train the classifiers"""
-    utils.gen_trained_sets(args.big)
+    utils.gen_trained_sets(args.big, args.cfg)
 
 def main():
     """Main vehicle detection function"""
@@ -43,7 +43,11 @@ def main():
     parser_a.set_defaults(func=video)
 
     parser_a = subparsers.add_parser('train', help='train the classifier')
-    parser_a.add_argument('-b','--big', help="use the small data set if not provided", action="store_true")
+    parser_a.add_argument('-c','--cfg', help="training configuration options", 
+                          type=int, required=True, 
+                          choices=range(1, len(config.hogc_ssahb_color) + 1))
+    parser_a.add_argument('-b','--big', help="use the small data set if not provided", 
+                          action="store_true", required=True)
     parser_a.set_defaults(func=train)
 
     args = parser.parse_args()

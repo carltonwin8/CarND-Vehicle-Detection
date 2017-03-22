@@ -2,6 +2,9 @@
 
 This is my scratch pad for ideas and is not official documentation.
 
+big data set has 8792 car & 8968 not cars,
+small data set has 1196 car & 1125 not cars
+
 ## Brain Storming
 
 ### TO DO
@@ -45,7 +48,7 @@ HOG
                           orient=9, pix_per_cell=8, cell_per_block=2
        + get_hog_features
 
-       
+
 ## Vehicle Sizes in images
 
 | Id | Description |
