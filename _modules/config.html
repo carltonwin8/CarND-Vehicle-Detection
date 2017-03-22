@@ -49,160 +49,61 @@
 <span class="sd">Module used to store common/global variables used by all other modules</span>
 
 <span class="sd">@author: Carlton Joseph</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<div class="viewcode-block" id="hog"><a class="viewcode-back" href="../rst/config.html#config.hog">[docs]</a><span class="k">class</span> <span class="nc">hog</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientations</span><span class="p">,</span> <span class="n">pixels_per_cell</span><span class="p">,</span> <span class="n">cells_per_block</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pixels_per_cell</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cells_per_block</span></div>
-        
-<div class="viewcode-block" id="color_hist"><a class="viewcode-back" href="../rst/config.html#config.color_hist">[docs]</a><span class="k">class</span> <span class="nc">color_hist</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nbins</span><span class="p">,</span> <span class="n">bins_range</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">orientations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pixels_per_cell</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cells_per_block</span></div>
-
-<div class="viewcode-block" id="spatial"><a class="viewcode-back" href="../rst/config.html#config.spatial">[docs]</a><span class="k">class</span> <span class="nc">spatial</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span></div>
-    
-<div class="viewcode-block" id="params"><a class="viewcode-back" href="../rst/config.html#config.params">[docs]</a><span class="k">class</span> <span class="nc">params</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hog</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">spatial</span><span class="p">,</span> <span class="n">color_space</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hogs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hogs</span><span class="p">(</span><span class="n">hog</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_hists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_color_hists</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spatials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_spatials</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_color_spaces</span><span class="p">(</span><span class="n">color_space</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hog</span> <span class="o">=</span> <span class="n">hog</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_hist</span> <span class="o">=</span> <span class="n">color_hist</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spatial</span> <span class="o">=</span> <span class="n">spatial</span><span class="p">((</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_space</span> <span class="o">=</span> <span class="s2">&quot;RGB&quot;</span>
-        
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="params.get_hogs"><a class="viewcode-back" href="../rst/config.html#config.params.get_hogs">[docs]</a>    <span class="k">def</span> <span class="nf">get_hogs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;hog parameters orientations, pixels_per_cell and cells_per_block&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">hog</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">hog</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">hog</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span></div>
-        
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="params.get_color_hists"><a class="viewcode-back" href="../rst/config.html#config.params.get_color_hists">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_hists</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;color histogram parameters nbin and bins_range&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">color_hist</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">))]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">color_hist</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">))]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">color_hist</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">)),</span> <span class="n">color_hist</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">))]</span></div>
-    
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="params.get_spatials"><a class="viewcode-back" href="../rst/config.html#config.params.get_spatials">[docs]</a>    <span class="k">def</span> <span class="nf">get_spatials</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bin spatial parameters size&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">spatial</span><span class="p">((</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">spatial</span><span class="p">((</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">spatial</span><span class="p">((</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">),(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">))]</span></div>
-    
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="params.get_color_spaces"><a class="viewcode-back" href="../rst/config.html#config.params.get_color_spaces">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_spaces</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;bin spatial parameters size&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;RGB&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;LUV&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;HSV&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;HLS&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;YUV&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;YCrCb&quot;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span><span class="s2">&quot;YCrCb&quot;</span><span class="p">]</span></div></div>
-        
+<span class="sd">&quot;&quot;&quot;</span>       
 <span class="n">train_big</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">small_img_set</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;../../non-vehicles_smallset&quot;</span><span class="p">,</span> <span class="s2">&quot;../../vehicles_smallset&quot;</span><span class="p">]</span>
 <span class="n">large_img_set</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;../../non-vehicles&quot;</span><span class="p">,</span> <span class="s2">&quot;../../vehicles&quot;</span><span class="p">]</span>
 
 <span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../output_images/&quot;</span>
+<span class="n">video_out_dir</span> <span class="o">=</span> <span class="s2">&quot;../../out/&quot;</span>
+<span class="n">train_dir</span> <span class="o">=</span> <span class="s2">&quot;../../training/&quot;</span>
+<span class="n">_not_vehicle</span> <span class="o">=</span> <span class="s2">&quot;non-vehicles_smallset_notcars1_extra511.jpeg&quot;</span>
+<span class="n">_vehicle</span> <span class="o">=</span> <span class="s2">&quot;vehicles_smallset_cars1_183.jpeg&quot;</span>
+<span class="n">not_vehicle</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">_not_vehicle</span>
+<span class="n">vehicle</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">_vehicle</span>
+<span class="n">get_hog_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_hog.&#39;</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">get_vehicle_hog</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">get_hog_fn</span><span class="p">(</span><span class="n">_vehicle</span><span class="p">)</span>
+<span class="n">get_not_vehicle_hog</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">get_hog_fn</span><span class="p">(</span><span class="n">_not_vehicle</span><span class="p">)</span>
+<span class="n">get_option</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">opts</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="n">opts</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">get_option</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Index into an array 1 based with overflow protection&quot;</span>
 
-<span class="n">not_vehicle</span> <span class="o">=</span> <span class="s2">&quot;non-vehicles_smallset_notcars1_extra511.jpeg&quot;</span>
-<span class="n">vehicle</span> <span class="o">=</span> <span class="s2">&quot;vehicles_smallset_cars1_183.jpeg&quot;</span>
+<span class="n">videos</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_1s.mp4&quot;</span><span class="p">],</span> <span class="c1">#1</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_s20t6.mp4&quot;</span><span class="p">],</span> <span class="c1">#2</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_s38t5.mp4&quot;</span><span class="p">],</span> <span class="c1">#3</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_4s.mp4&quot;</span><span class="p">],</span> <span class="c1">#4</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_s20t6.mp4&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../../in/project_video_s38t5.mp4&quot;</span><span class="p">],</span> <span class="c1">#5</span>
+    <span class="p">[</span><span class="s2">&quot;../../in/project_video_s20t7.mp4&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../../in/project_video_s38t6.mp4&quot;</span><span class="p">],</span> <span class="c1">#6</span>
+    <span class="p">[</span><span class="s2">&quot;../project_video.mp4&quot;</span><span class="p">]</span> <span class="c1">#7</span>
+<span class="p">]</span>
+<span class="n">get_videos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">get_option</span><span class="p">(</span><span class="n">videos</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>  
 
-<div class="viewcode-block" id="get_hog_fn"><a class="viewcode-back" href="../rst/config.html#config.get_hog_fn">[docs]</a><span class="k">def</span> <span class="nf">get_hog_fn</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Takes a file name and return is with _hog appended&quot;&quot;&quot;</span>
-    <span class="n">fn</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">fn</span> <span class="o">+</span> <span class="s1">&#39;_hog.&#39;</span> <span class="o">+</span> <span class="n">ext</span></div>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test1.jpg&quot;</span><span class="p">],</span> <span class="c1">#1</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test2.jpg&quot;</span><span class="p">],</span> <span class="c1">#2</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test3.jpg&quot;</span><span class="p">],</span> <span class="c1">#3</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test4.jpg&quot;</span><span class="p">],</span> <span class="c1">#4</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test5.jpg&quot;</span><span class="p">],</span> <span class="c1">#5</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test6.jpg&quot;</span><span class="p">],</span> <span class="c1">#6</span>
+    <span class="p">[</span><span class="s2">&quot;../../bbox-example-image.jpg&quot;</span><span class="p">],</span> <span class="c1">#7</span>
+    <span class="p">[</span><span class="s2">&quot;../test_images/test1.jpg&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../test_images/test2.jpg&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../test_images/test3.jpg&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../test_images/test4.jpg&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../test_images/test5.jpg&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;../test_images/test6.jpg&quot;</span><span class="p">]</span> <span class="c1">#8</span>
+<span class="p">]</span>
+<span class="n">get_images</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">get_option</span><span class="p">(</span><span class="n">images</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
 
-<div class="viewcode-block" id="get_not_vehicle_hog"><a class="viewcode-back" href="../rst/config.html#config.get_not_vehicle_hog">[docs]</a><span class="k">def</span> <span class="nf">get_not_vehicle_hog</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">get_hog_fn</span><span class="p">(</span><span class="n">not_vehicle</span><span class="p">)</span></div>
-    
-<div class="viewcode-block" id="get_vehicle_hog"><a class="viewcode-back" href="../rst/config.html#config.get_vehicle_hog">[docs]</a><span class="k">def</span> <span class="nf">get_vehicle_hog</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Path and filename for a vehicle image&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">get_hog_fn</span><span class="p">(</span><span class="n">vehicle</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="get_not_vehicle"><a class="viewcode-back" href="../rst/config.html#config.get_not_vehicle">[docs]</a><span class="k">def</span> <span class="nf">get_not_vehicle</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Path and filename for not a vehicle image&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">not_vehicle</span></div>
-    
-<div class="viewcode-block" id="get_vehicle"><a class="viewcode-back" href="../rst/config.html#config.get_vehicle">[docs]</a><span class="k">def</span> <span class="nf">get_vehicle</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Path and filename for a vehicle image&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">output_dir</span> <span class="o">+</span> <span class="n">vehicle</span></div>
-
-<div class="viewcode-block" id="get_videos"><a class="viewcode-back" href="../rst/config.html#config.get_videos">[docs]</a><span class="k">def</span> <span class="nf">get_videos</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_1s.mp4&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_s20t6.mp4&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_s38t5.mp4&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_4s.mp4&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_s20t6.mp4&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../../project_video_s38t5.mp4&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../project_video_s20t7.mp4&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../../project_video_s38t6.mp4&quot;</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../project_video.mp4&quot;</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="get_images"><a class="viewcode-back" href="../rst/config.html#config.get_images">[docs]</a><span class="k">def</span> <span class="nf">get_images</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test1.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test2.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test3.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test4.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test5.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test6.jpg&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../../bbox-example-image.jpg&quot;</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;../test_images/test1.jpg&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../test_images/test2.jpg&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../test_images/test3.jpg&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../test_images/test4.jpg&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../test_images/test5.jpg&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;../test_images/test6.jpg&quot;</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="trained_svm_fn"><a class="viewcode-back" href="../rst/config.html#config.trained_svm_fn">[docs]</a><span class="k">def</span> <span class="nf">trained_svm_fn</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">train_big</span><span class="p">:</span>
-        <span class="n">bs</span> <span class="o">=</span> <span class="s2">&quot;b&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bs</span> <span class="o">=</span> <span class="s2">&quot;s&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;../../svm_pickle_</span><span class="si">{}</span><span class="s2">.p&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span></div>
+<span class="n">hogc_ssahb_color</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="s2">&quot;HSV&quot;</span><span class="p">,</span> <span class="s2">&quot;LUV&quot;</span><span class="p">,</span> <span class="s2">&quot;HLS&quot;</span><span class="p">,</span> <span class="s2">&quot;YUV&quot;</span><span class="p">,</span> <span class="s2">&quot;YCrCb&quot;</span><span class="p">]),</span> <span class="c1">#1</span>
+    <span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;LUV&quot;</span><span class="p">]),</span> <span class="c1">#2</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;RGB&quot;</span><span class="p">])</span> <span class="c1">#3</span>
+<span class="p">]</span>
+<span class="n">get_hogc_ssahb_color</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">get_option</span><span class="p">(</span><span class="n">hogc_ssahb_color</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 
       </div>

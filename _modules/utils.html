@@ -54,6 +54,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">config</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">lesson_functions</span> <span class="k">as</span> <span class="nn">lf</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="get_image_fns"><a class="viewcode-back" href="../rst/utils.html#utils.get_image_fns">[docs]</a><span class="k">def</span> <span class="nf">get_image_fns</span><span class="p">(</span><span class="n">base_dirs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get image filenames from a directory set&quot;&quot;&quot;</span>
@@ -76,13 +78,13 @@
             
     <span class="k">return</span> <span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span></div>
 
-<div class="viewcode-block" id="get_example_fns"><a class="viewcode-back" href="../rst/utils.html#utils.get_example_fns">[docs]</a><span class="k">def</span> <span class="nf">get_example_fns</span><span class="p">():</span>
+<div class="viewcode-block" id="get_example_fns"><a class="viewcode-back" href="../rst/utils.html#utils.get_example_fns">[docs]</a><span class="k">def</span> <span class="nf">get_example_fns</span><span class="p">(</span><span class="n">train_big</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get image files name based on configuration&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">train_big</span><span class="p">:</span>            
-        <span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span> <span class="o">=</span> <span class="n">get_image_fns</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">large_img_set</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">train_big</span><span class="p">:</span>            
+        <span class="n">img_set</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">large_img_set</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span> <span class="o">=</span> <span class="n">get_image_fns</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">small_img_set</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cars</span><span class="p">,</span> <span class="n">notcars</span></div>
+        <span class="n">img_set</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">small_img_set</span>
+    <span class="k">return</span> <span class="n">get_image_fns</span><span class="p">(</span><span class="n">img_set</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_example_out_fn"><a class="viewcode-back" href="../rst/utils.html#utils.get_example_out_fn">[docs]</a><span class="k">def</span> <span class="nf">get_example_out_fn</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates an output filename based on an input filename&quot;&quot;&quot;</span>
@@ -112,17 +114,19 @@
     <span class="sd">&quot;&quot;&quot;Scales an image to full scale values&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">img</span><span class="o">*</span><span class="mi">255</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="save_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.save_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">save_trained_svm</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">):</span>
+<div class="viewcode-block" id="save_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.save_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">save_trained_svm</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">):</span>
     
     <span class="n">pkl</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;svc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">svc</span>
     <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;X_scaler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_scaler</span>
-    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pkl</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">trained_svm_fn</span><span class="p">(),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span></div>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pkl</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span></div>
      
-<div class="viewcode-block" id="load_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.load_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">load_trained_svm</span><span class="p">():</span>
-    <span class="n">pkl</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">trained_svm_fn</span><span class="p">(),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+<div class="viewcode-block" id="load_trained_svm"><a class="viewcode-back" href="../rst/utils.html#utils.load_trained_svm">[docs]</a><span class="k">def</span> <span class="nf">load_trained_svm</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="n">pkl</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;svc&quot;</span><span class="p">],</span> <span class="n">pkl</span><span class="p">[</span><span class="s2">&quot;X_scaler&quot;</span><span class="p">]</span></div>
 
+<div class="viewcode-block" id="get_video_out"><a class="viewcode-back" href="../rst/utils.html#utils.get_video_out">[docs]</a><span class="k">def</span> <span class="nf">get_video_out</span><span class="p">(</span><span class="n">v_in</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">video_out_dir</span> <span class="o">+</span> <span class="n">v_in</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="car"><a class="viewcode-back" href="../rst/utils.html#utils.car">[docs]</a><span class="k">class</span> <span class="nc">car</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">car</span><span class="p">,</span> <span class="n">y_top</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -145,6 +149,50 @@
                      <span class="n">car</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">397</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">121</span><span class="p">),</span>
                      <span class="n">car</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">408</span><span class="p">,</span> <span class="mi">138</span><span class="p">,</span> <span class="mi">93</span><span class="p">),</span>
                      <span class="n">car</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">97</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="detect"><a class="viewcode-back" href="../rst/utils.html#utils.detect">[docs]</a><span class="k">class</span> <span class="nc">detect</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heat_only</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">svc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_scaler</span> <span class="o">=</span> <span class="n">load_trained_svm</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">heat_only</span> <span class="o">=</span> <span class="n">heat_only</span>
+
+<div class="viewcode-block" id="detect.cars"><a class="viewcode-back" href="../rst/utils.html#utils.detect.cars">[docs]</a>    <span class="k">def</span> <span class="nf">cars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">lf</span><span class="o">.</span><span class="n">get_cars</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">svc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_scaler</span><span class="p">,</span> <span class="n">heat_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">heat_only</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="time_log"><a class="viewcode-back" href="../rst/utils.html#utils.time_log">[docs]</a><span class="k">class</span> <span class="nc">time_log</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tlog</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tlog</span> <span class="o">=</span> <span class="n">tlog</span>
+<div class="viewcode-block" id="time_log.time"><a class="viewcode-back" href="../rst/utils.html#utils.time_log.time">[docs]</a>    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>        
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tlog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div></div>
+    
+<div class="viewcode-block" id="gen_trained_sets"><a class="viewcode-back" href="../rst/utils.html#utils.gen_trained_sets">[docs]</a><span class="k">def</span> <span class="nf">gen_trained_sets</span><span class="p">(</span><span class="n">train_big</span><span class="p">,</span> <span class="n">cfg</span><span class="p">):</span>
+    <span class="n">tlog</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tl</span> <span class="o">=</span> <span class="n">time_log</span><span class="p">(</span><span class="n">tlog</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">hog_channels</span><span class="p">,</span> <span class="n">ssahbs</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_hogc_ssahb_color</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="n">cars</span><span class="p">,</span> <span class="n">not_cars</span> <span class="o">=</span> <span class="n">get_example_fns</span><span class="p">(</span><span class="n">train_big</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training on data set big is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_big</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">ssahb</span> <span class="ow">in</span> <span class="n">ssahbs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">hog_channel</span> <span class="ow">in</span> <span class="n">hog_channels</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;big </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> car &amp; </span><span class="si">{}</span><span class="s1"> not cars, trained for ssahb</span><span class="si">{}</span><span class="s1">, hogc</span><span class="si">{}</span><span class="s1"> for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_big</span><span class="p">,</span>
+                      <span class="nb">len</span><span class="p">(</span><span class="n">cars</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">not_cars</span><span class="p">),</span> <span class="n">ssahb</span><span class="p">,</span> <span class="n">hog_channel</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+                <span class="n">hc</span> <span class="o">=</span> <span class="n">hog_channel</span> <span class="k">if</span> <span class="n">hog_channel</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="s2">&quot;ALL&quot;</span>
+                <span class="n">t3</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">train_svm</span><span class="p">(</span><span class="n">cars</span><span class="p">,</span> <span class="n">not_cars</span><span class="p">,</span> <span class="n">color_space</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> 
+                                             <span class="n">hog_channel</span><span class="o">=</span><span class="n">hc</span><span class="p">,</span> <span class="n">hist_bins</span><span class="o">=</span><span class="n">ssahb</span><span class="p">,</span>
+                                             <span class="n">spatial_size</span><span class="o">=</span><span class="p">(</span><span class="n">ssahb</span><span class="p">,</span><span class="n">ssahb</span><span class="p">))</span>
+                <span class="n">t4</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">tfnp</span> <span class="o">=</span> <span class="s1">&#39;_ssahb</span><span class="si">{}</span><span class="s1">_hc</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">.p&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ssahb</span><span class="p">,</span> <span class="n">hog_channel</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+                <span class="n">tfn</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span> <span class="o">+</span> <span class="n">tfnp</span> <span class="k">if</span> <span class="n">train_big</span> <span class="k">else</span> <span class="s1">&#39;s&#39;</span> <span class="o">+</span> <span class="n">tfnp</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> generated in </span><span class="si">{}</span><span class="s1"> seconds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tfn</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">t4</span><span class="o">-</span><span class="n">t3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">train_dir</span> <span class="o">+</span> <span class="n">tfn</span>
+                <span class="n">save_trained_svm</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">svc</span><span class="p">,</span> <span class="n">X_scaler</span><span class="p">)</span>
+
+    <span class="n">t5</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total time </span><span class="si">{}</span><span class="s1"> seconds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t5</span><span class="o">-</span><span class="n">t1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">tlog</span><span class="p">)</span></div>
 </pre></div>
 
       </div>
