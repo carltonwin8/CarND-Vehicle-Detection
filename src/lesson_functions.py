@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This module contains procedures provide in the "Udacity Self-Driving Car Engineer
-Nanodegree" lecture notes.
+Nanodegree" lecture notes. Some modifications were made.
 https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013
 """
 import matplotlib.image as mpimg
@@ -207,6 +207,10 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
         elif color_space == 'YCrCb':
             feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
     else: feature_image = np.copy(img)      
+
+    if np.max(feature_image) > 2: # assume it is 0-255 and not 0-1
+        feature_image = feature_image.astype(np.float32)/255
+
     #3) Compute spatial features if flag is set
     if spatial_feat == True:
         spatial_features = bin_spatial(feature_image, size=spatial_size)
@@ -219,7 +223,7 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
         img_features.append(hist_features)
     #7) Compute HOG features if flag is set
     if hog_feat == True:
-        if hog_channel == 'ALL':
+        if hog_channel == 'ALL' or hog_channel > 2:
             hog_features = []
             for channel in range(feature_image.shape[2]):
                 hog_features.extend(get_hog_features(feature_image[:,:,channel], 
@@ -332,9 +336,7 @@ def train_svm(cars,
                             hog_channel=hog_channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
     t2 = time.time()
-    print('{} car & {} not cars features extracted {} seconds'.format(len(cars), 
-          len(notcars), round(t2-t1, 0)))
-
+    
     X = np.vstack((car_features, notcar_features)).astype(np.float64)                        
     # Fit a per-column scaler
     X_scaler = StandardScaler().fit(X)
@@ -344,25 +346,25 @@ def train_svm(cars,
     # Define the labels vector
     y = np.hstack((np.ones(len(car_features)), np.zeros(len(notcar_features))))
     
-    
     # Split up data into randomized training and test sets
     rand_state = np.random.randint(0, 100)
     X_train, X_test, y_train, y_test = train_test_split(
         scaled_X, y, test_size=0.2, random_state=rand_state)
     
-    print('Using:',orient,'orientations',pix_per_cell,
-        'pixels per cell and', cell_per_block,'cells per block')
-    print('Training Set:', len(X_train))
-    print('Feature vector length:', len(X_train[0]))
     # Use a linear SVC 
     svc = LinearSVC()
     # Check the training time for the SVC
-    t=time.time()
+    t3=time.time()
     svc.fit(X_train, y_train)
-    t2 = time.time()
-    print(round(t2-t, 2), 'Seconds to train SVC...')
+    t4 = time.time()
     prediction = svc.predict(X_test)
-    print('The accuracy is {}.'.format(accuracy_score(prediction, y_test)))
+    
+    cfg_str = '{} in training set with feature vector length of {}'
+    print(cfg_str.format(len(X_train), len(X_train[0])))
+    ftr_str = 'Features extracted in {} seconds and trained SVC in {} with accuracy {}.'
+    print(ftr_str.format(round(t2-t1, 0), round(t4-t3, 0), round(accuracy_score(prediction, y_test),2)))
+    stu_str = 'Using {} orientations {} pixels per cell and {} cells per block'
+    print(stu_str.format(orient, pix_per_cell, cell_per_block,))
     return svc, X_scaler
 
 def add_heat(heatmap, bbox_list):
@@ -409,8 +411,12 @@ def heat_map(image, box_list, threshold=1):
     labels = label(heatmap)
     return heatmap, labels
     
-def get_cars(image, svc, X_scaler, heat_thres=4, heat_only=False):
-    hot_windows = detect_cars_in_image(image, svc, X_scaler)
+def get_cars(image, svc, X_scaler, 
+             color_space, hog_channel, spatial_size, hist_bins,
+             heat_thres=4, heat_only=False):
+    hot_windows = detect_cars_in_image(image, svc, X_scaler,
+                        color_space = color_space, hog_channel = hog_channel,
+                        spatial_size = spatial_size, hist_bins = hist_bins)
     heatmap, labels = heat_map(image, hot_windows, heat_thres)
     draw_image = np.copy(image)
     if not heat_only:

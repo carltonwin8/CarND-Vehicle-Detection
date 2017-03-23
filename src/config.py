@@ -4,7 +4,9 @@
 Module used to store common/global variables used by all other modules
 
 @author: Carlton Joseph
-"""       
+"""
+import cv2
+
 train_big = True
 
 small_img_set = ["../../non-vehicles_smallset", "../../vehicles_smallset"]
@@ -12,6 +14,7 @@ large_img_set = ["../../non-vehicles", "../../vehicles"]
 
 output_dir = "../output_images/"
 video_out_dir = "../../out/"
+img_out_dir = "../../outimg/"
 train_dir = "../../training/"
 _not_vehicle = "non-vehicles_smallset_notcars1_extra511.jpeg"
 _vehicle = "vehicles_smallset_cars1_183.jpeg"
@@ -56,6 +59,21 @@ get_images = lambda x: get_option(images,x)
 hogc_ssahb_color = [
     ([0, 1, 2, 3], [16, 32], ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]), #1
     ([1], [16], ["LUV"]), #2
-    ([0], [16], ["RGB"]) #3
+    ([0], [16], ["RGB"]), #3
+    ([0, 1, 2, 3], [16], ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]), #4
+    ([0, 1, 2, 3], [32], ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]), #5
+    ([1], [16], ["LUV", "YUV"]), #6 - with small data set got 1.0 for accuracy
+    ([0, 1, 2, 3], [16, 32], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #7 remove LUV since it blows up
+    ([3], [16], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #8 
+    ([0, 1, 2, 3], [32], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #9 remove LUV since it blows up
 ]
 get_hogc_ssahb_color = lambda x: get_option(hogc_ssahb_color,x)
+
+color_conv_map = {
+    'RGB': (cv2.COLOR_RGB2GRAY, cv2.COLOR_RGB2GRAY), # COLOR_RGB2GRAY is a dummy never used
+    'HSV': (cv2.COLOR_RGB2HSV, cv2.COLOR_HSV2RGB),
+    'LUV': (cv2.COLOR_RGB2LUV, cv2.COLOR_LUV2RGB),
+    'HLS': (cv2.COLOR_RGB2HLS, cv2.COLOR_HLS2RGB),
+    'YUV': (cv2.COLOR_RGB2YUV, cv2.COLOR_YUV2RGB),
+    'YCrCb': (cv2.COLOR_RGB2YCrCb, cv2.COLOR_YCrCb2RGB)      
+}

@@ -11,6 +11,7 @@ import config
 import pickle
 import lesson_functions as lf
 import time
+import cv2
 
 def get_image_fns(base_dirs):
     """Get image filenames from a directory set"""
@@ -127,24 +128,88 @@ def gen_trained_sets(train_big, cfg):
     t1 = tl.time()
     hog_channels, ssahbs, colors = config.get_hogc_ssahb_color(cfg)
     cars, not_cars = get_example_fns(train_big)
-    print('Training on data set big is {}'.format(train_big))
     for ssahb in ssahbs:
         for hog_channel in hog_channels:
             for color in colors:
-                print('big {}, {} car & {} not cars, trained for ssahb{}, hogc{} for {}'.format(train_big,
-                      len(cars), len(not_cars), ssahb, hog_channel, color))
+                ds = "big" if train_big else "small"
+                fmt_str = '{} data set with {} car & {} not cars, trained for ssahb{}, hogc{} for {}'
+                print(fmt_str.format(ds, len(cars), len(not_cars), ssahb, hog_channel, color))
                 hc = hog_channel if hog_channel < 3 else "ALL"
                 t3 = tl.time()
                 svc, X_scaler = lf.train_svm(cars, not_cars, color_space=color, 
                                              hog_channel=hc, hist_bins=ssahb,
                                              spatial_size=(ssahb,ssahb))
                 t4 = tl.time()
-                tfnp = '_ssahb{}_hc{}_{}.p'.format(ssahb, hog_channel, color)
-                tfn = 'b' + tfnp if train_big else 's' + tfnp
+                fn, tfn = trained_fn(train_big, ssahb, hog_channel, color)
                 print('{} generated in {} seconds'.format(tfn, round(t4-t3, 0)))
-                fn = config.train_dir + tfn
                 save_trained_svm(fn, svc, X_scaler)
 
     t5 = tl.time()
     print('Total time {} seconds'.format(round(t5-t1, 0)))
     print(tl.tlog)
+    
+def show_feature_info(cat, notcar):
+    fmtstr = "{} len={}, shape={}, min={}, max={}"
+    print(fmtstr.format("car",len(car), car.shape, np.min(car), np.min(car)))
+    print(fmtstr.format("notcar",len(notcar), notcar.shape, np.min(notcar), np.min(notcar)))
+    
+def trained_fn(train_big, ssahb, hog_channel, color):
+    tfnp = '_ssahb{}_hc{}_{}.p'.format(ssahb, hog_channel, color)
+    tfn = 'b' + tfnp if train_big else 's' + tfnp
+    fn = config.train_dir + tfn
+    return fn, tfn
+    
+def save_fn(train_big, ssahb, hog_channel, color, fn):
+    fnp = '_{}_s{}_h{}_{}.'.format('b' if train_big else 's',
+            ssahb, hog_channel, color)
+    base, ext = fn.split('/')[-1].split('.')
+    return config.img_out_dir + base + fnp + ext
+
+def view_fn(train_big, ssahb, hog_channel, color, fn):
+    return save_fn(train_big, ssahb, hog_channel, color, fn).replace("../../","../")
+
+def basefn(imgfns, color, hog_channel):
+    file, ext = imgfns.split('/')[-1].split('.')
+    fn = "{}_{}_{}.{}".format(file, color, hog_channel, ext)
+    return config.img_out_dir + fn
+
+def gen_view_md():
+    train_big = False
+    hog_channels, ssahbs, colors = config.get_hogc_ssahb_color(4)
+    for ssahb in ssahbs:
+        for hog_channel in hog_channels:
+            for color in colors:
+                imgfns = config.get_images(8)
+                str = '| {}_s{}_h{}_{} '.format('b' if train_big else 's', 
+                         ssahb, hog_channel, color)
+                str2 = '| '
+                for imgfn in imgfns:
+                    fn = basefn(imgfn, color, hog_channel)
+                    str2 += '| ![]({}) '.format(fn.replace("../../","../"))
+                    str += '| ![]({}) '.format(view_fn(train_big, ssahb, hog_channel, color, imgfn))
+                str += "|"
+                str2 += "|"
+                print(str2)
+                print(str)
+
+gen_view_md() # uncomment and run this file to get images file names
+
+def gen_channels():
+    """Shows all channel for a given image and color space by creating images"""
+    for imgfns in config.get_images(8):
+        image = mpimg.imread(imgfns)
+        for color in ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]:
+            for channel in [0,1,2,3]:
+                if color == "RGB":
+                    img = image
+                else:
+                    img = cv2.cvtColor(image, config.color_conv_map[color][0])
+                if channel > 2:
+                    if color != "RGB":
+                        img = cv2.cvtColor(img, config.color_conv_map[color][1])
+                    imgC = cv2.cvtColor(img, config.color_conv_map["RGB"][1])
+                else:
+                    imgC = img[:, :, channel]
+                cv2.imwrite(basefn(imgfns, color, channel), imgC)
+                
+#gen_channels() # uncomment and run this file to get images files
