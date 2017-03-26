@@ -51,7 +51,7 @@
   <div class="section" id="module-lesson_functions">
 <span id="lesson-functions-module"></span><h1>lesson_functions module<a class="headerlink" href="#module-lesson_functions" title="Permalink to this headline">¶</a></h1>
 <p>This module contains procedures provide in the &#8220;Udacity Self-Driving Car Engineer
-Nanodegree&#8221; lecture notes.
+Nanodegree&#8221; lecture notes. Some modifications were made.
 <a class="reference external" href="https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013">https://www.udacity.com/course/self-driving-car-engineer-nanodegree&#8211;nd013</a></p>
 <dl class="function">
 <dt id="lesson_functions.add_heat">
@@ -84,7 +84,7 @@ Nanodegree&#8221; lecture notes.
 
 <dl class="function">
 <dt id="lesson_functions.detect_cars_in_image">
-<code class="descclassname">lesson_functions.</code><code class="descname">detect_cars_in_image</code><span class="sig-paren">(</span><em>image, svc, X_scaler, color_space='RGB', orient=9, pix_per_cell=8, cell_per_block=2, hog_channel=0, spatial_size=(16, 16), hist_bins=16, spatial_feat=True, hist_feat=True, hog_feat=True, y_start_stop=[400, 650]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#detect_cars_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.detect_cars_in_image" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">detect_cars_in_image</code><span class="sig-paren">(</span><em>image, svc, X_scaler, color_space='RGB', orient=9, pix_per_cell=8, cell_per_block=2, channel=0, spatial_size=(16, 16), hist_bins=16, spatial_feat=True, hist_feat=True, hog_feat=True, y_start_stop=[400, 650]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#detect_cars_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.detect_cars_in_image" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -101,7 +101,7 @@ Nanodegree&#8221; lecture notes.
 
 <dl class="function">
 <dt id="lesson_functions.extract_features">
-<code class="descclassname">lesson_functions.</code><code class="descname">extract_features</code><span class="sig-paren">(</span><em>imgs</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.extract_features" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">extract_features</code><span class="sig-paren">(</span><em>imgs</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.extract_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define a function to extract features from a list of images</p>
 </dd></dl>
 
@@ -112,7 +112,7 @@ Nanodegree&#8221; lecture notes.
 
 <dl class="function">
 <dt id="lesson_functions.get_cars">
-<code class="descclassname">lesson_functions.</code><code class="descname">get_cars</code><span class="sig-paren">(</span><em>image</em>, <em>svc</em>, <em>X_scaler</em>, <em>heat_thres=4</em>, <em>heat_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#get_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.get_cars" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">get_cars</code><span class="sig-paren">(</span><em>image</em>, <em>svc</em>, <em>X_scaler</em>, <em>color_space</em>, <em>channel</em>, <em>spatial_size</em>, <em>hist_bins</em>, <em>heat_thres=4</em>, <em>heat_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#get_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.get_cars" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -129,14 +129,14 @@ Nanodegree&#8221; lecture notes.
 
 <dl class="function">
 <dt id="lesson_functions.search_windows">
-<code class="descclassname">lesson_functions.</code><code class="descname">search_windows</code><span class="sig-paren">(</span><em>img</em>, <em>windows</em>, <em>clf</em>, <em>scaler</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>hist_range=(0</em>, <em>256)</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#search_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.search_windows" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">search_windows</code><span class="sig-paren">(</span><em>img</em>, <em>windows</em>, <em>clf</em>, <em>scaler</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>hist_range=(0</em>, <em>256)</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#search_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.search_windows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define a function you will pass an image
 and the list of windows to be searched (output of slide_windows())</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="lesson_functions.single_img_features">
-<code class="descclassname">lesson_functions.</code><code class="descname">single_img_features</code><span class="sig-paren">(</span><em>img</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#single_img_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.single_img_features" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">single_img_features</code><span class="sig-paren">(</span><em>img</em>, <em>color_space='RGB'</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>channel=0</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#single_img_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.single_img_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define a function to extract features from a single image window
 This function is very similar to extract_features()
 just for a single image rather than list of images</p>
@@ -153,7 +153,7 @@ and overlap fraction (for both x and y)</p>
 
 <dl class="function">
 <dt id="lesson_functions.train_svm">
-<code class="descclassname">lesson_functions.</code><code class="descname">train_svm</code><span class="sig-paren">(</span><em>cars</em>, <em>notcars</em>, <em>color_space='RGB'</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>hog_channel=0</em>, <em>spatial_size=(16</em>, <em>16)</em>, <em>hist_bins=16</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#train_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.train_svm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">train_svm</code><span class="sig-paren">(</span><em>cars</em>, <em>notcars</em>, <em>color_space='RGB'</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em>, <em>channel=0</em>, <em>spatial_size=(16</em>, <em>16)</em>, <em>hist_bins=16</em>, <em>spatial_feat=True</em>, <em>hist_feat=True</em>, <em>hog_feat=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#train_svm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.train_svm" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
