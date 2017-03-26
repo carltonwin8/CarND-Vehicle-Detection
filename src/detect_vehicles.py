@@ -19,10 +19,11 @@ def video(args):
     channels, ssahbs, colors = config.get_channel_ssahb_color(args.cfg)
     channel, ssahb, color = utils.check_singles(channels, ssahbs, colors)
     heat_only = False
-    detect = utils.detect(channel, ssahb, color, args.ds=="big", heat_only)
+    bs = args.ds=="big"
+    detect = utils.detect(channel, ssahb, color, bs, heat_only)
     
     for video_in in videos_in:
-        video_out = utils.get_video_out(video_in)
+        video_out = utils.get_video_out(video_in, channel, ssahb, color, bs)
         print("From =>", video_in, "To =>", video_out)
 
         clip2 = VideoFileClip(video_in)

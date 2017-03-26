@@ -82,8 +82,10 @@ def load_trained_svm(fn):
     pkl = pickle.load(open(fn, "rb"))
     return pkl["svc"], pkl["X_scaler"]
 
-def get_video_out(v_in):
-    return config.video_out_dir + v_in.split('/')[-1]
+def get_video_out(v_in, channel, ssahb, color, bs):
+    file, ext = v_in.split('/')[-1].split('.')
+    return '{}{}_{}_ssahb{}_hc{}_{}.{}'.format(config.video_out_dir, file,
+            "b" if bs else 's', ssahb, channel, color, ext)
 
 class car():
     def __init__(self, img, car, y_top, x, y):
