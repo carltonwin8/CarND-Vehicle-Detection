@@ -14,13 +14,13 @@ from moviepy.editor import VideoFileClip
 def video(args):
     """video detection function"""
 
-    videos_in = config.get_videos(args.videos)
-    detect = utils.detect(True)
+    videos_in = config.get_videos(args.id)
     
-    print(args)
-    print('End Video')
-    return
-
+    channels, ssahbs, colors = config.get_channel_ssahb_color(args.cfg)
+    channel, ssahb, color = utils.check_singles(channels, ssahbs, colors)
+    heat_only = False
+    detect = utils.detect(channel, ssahb, color, args.ds=="big", heat_only)
+    
     for video_in in videos_in:
         video_out = utils.get_video_out(video_in)
         print("From =>", video_in, "To =>", video_out)
@@ -37,20 +37,22 @@ def train(args):
 def main():
     """Main vehicle detection function"""
     parser = argparse.ArgumentParser(description='Process video file or train svm.')
+
     subparsers = parser.add_subparsers(help='Process video file')
 
     parser_a = subparsers.add_parser('video', help='Video file processing seletion')
     parser_a.set_defaults(func=video)
-    parser_a.add_argument('id', help="video sequence",type=int, nargs='?', const=1, default=1)
+    parser_a.add_argument('-i', '--id', help="video sequence", required=True, type=int, 
+                          choices=range(1, len(config.videos) + 1))
 
     parser_b = subparsers.add_parser('train', help='train the classifier')
     parser_b.set_defaults(func=train)
-    parser_b.add_argument('-c','--cfg', help="training configuration options", 
-                          type=int, required=True, 
-                          choices=range(1, len(config.hogc_ssahb_color) + 1))
-    parser_b.add_argument('-d','--ds', help="dataset to use for training", 
-                          choices=['big', 'small'], required=True)
 
+    parser.add_argument('-d','--ds', help="dataset to use for training", 
+                          choices=['big', 'small'], required=True)
+    parser.add_argument('-c','--cfg', help="training configuration options", 
+                          type=int, required=True, 
+                          choices=range(1, len(config.channel_ssahb_color) + 1))
 
     args = parser.parse_args()
     if len(vars(args)) == 0:

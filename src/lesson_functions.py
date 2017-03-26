@@ -72,7 +72,7 @@ def color_hist(img, nbins=32, bins_range=(0, 256)):
 
 def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                         hist_bins=32, orient=9,
-                        pix_per_cell=8, cell_per_block=2, hog_channel=0,
+                        pix_per_cell=8, cell_per_block=2, channel=0,
                         spatial_feat=True, hist_feat=True, hog_feat=True):
     """Define a function to extract features from a list of images"""
     # Have this function call bin_spatial() and color_hist()
@@ -109,7 +109,7 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
             file_features.append(hist_features)
         if hog_feat == True:
         # Call get_hog_features() with vis=False, feature_vec=True
-            if hog_channel == 'ALL':
+            if channel == 'ALL':
                 hog_features = []
                 for channel in range(feature_image.shape[2]):
                     hog_features.append(get_hog_features(feature_image[:,:,channel],
@@ -117,7 +117,7 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
                                         vis=False, feature_vec=True))
                 hog_features = np.ravel(hog_features)
             else:
-                hog_features = get_hog_features(feature_image[:,:,hog_channel], orient,
+                hog_features = get_hog_features(feature_image[:,:,channel], orient,
                             pix_per_cell, cell_per_block, vis=False, feature_vec=True)
             # Append the new feature vector to the features list
             file_features.append(hog_features)
@@ -185,7 +185,7 @@ def draw_boxes(img, bboxes, color=(0, 0, 255), thick=6):
 
 def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                         hist_bins=32, orient=9, 
-                        pix_per_cell=8, cell_per_block=2, hog_channel=0,
+                        pix_per_cell=8, cell_per_block=2, channel=0,
                         spatial_feat=True, hist_feat=True, hog_feat=True):
     """
     Define a function to extract features from a single image window
@@ -223,14 +223,14 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
         img_features.append(hist_features)
     #7) Compute HOG features if flag is set
     if hog_feat == True:
-        if hog_channel == 'ALL' or hog_channel > 2:
+        if channel == 'ALL' or channel > 2:
             hog_features = []
             for channel in range(feature_image.shape[2]):
                 hog_features.extend(get_hog_features(feature_image[:,:,channel], 
                                     orient, pix_per_cell, cell_per_block, 
                                     vis=False, feature_vec=True))      
         else:
-            hog_features = get_hog_features(feature_image[:,:,hog_channel], orient, 
+            hog_features = get_hog_features(feature_image[:,:,channel], orient, 
                         pix_per_cell, cell_per_block, vis=False, feature_vec=True)
         #8) Append features to list
         img_features.append(hog_features)
@@ -242,7 +242,7 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
                     spatial_size=(32, 32), hist_bins=32, 
                     hist_range=(0, 256), orient=9, 
                     pix_per_cell=8, cell_per_block=2, 
-                    hog_channel=0, spatial_feat=True, 
+                    channel=0, spatial_feat=True, 
                     hist_feat=True, hog_feat=True):
     """
     Define a function you will pass an image 
@@ -259,7 +259,7 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
-                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
+                            channel=channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
         #5) Scale extracted features to be fed to classifier
         test_features = scaler.transform(np.array(features).reshape(1, -1))
@@ -278,7 +278,7 @@ def detect_cars_in_image(image,
                          orient = 9,  # HOG orientations
                         pix_per_cell = 8, # HOG pixels per cell
                         cell_per_block = 2, # HOG cells per block
-                        hog_channel = 0, # Can be 0, 1, 2, or "ALL"
+                        channel = 0, # Can be 0, 1, 2, or "ALL"
                         spatial_size = (16, 16), # Spatial binning dimensions
                         hist_bins = 16,    # Number of histogram bins
                         spatial_feat = True, # Spatial features on or off
@@ -304,7 +304,7 @@ def detect_cars_in_image(image,
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
-                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
+                            channel=channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)                       
     
     return hot_windows
@@ -315,7 +315,7 @@ def train_svm(cars,
               orient = 9,  # HOG orientations
               pix_per_cell = 8, # HOG pixels per cell
               cell_per_block = 2, # HOG cells per block
-              hog_channel = 0, # Can be 0, 1, 2, or "ALL"
+              channel = 0, # Can be 0, 1, 2, or "ALL"
               spatial_size = (16, 16), # Spatial binning dimensions
               hist_bins = 16,    # Number of histogram bins
               spatial_feat = True, # Spatial features on or off
@@ -327,13 +327,13 @@ def train_svm(cars,
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
-                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
+                            channel=channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
     notcar_features = extract_features(notcars, color_space=color_space, 
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
-                            hog_channel=hog_channel, spatial_feat=spatial_feat, 
+                            channel=channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
     t2 = time.time()
     
@@ -412,10 +412,10 @@ def heat_map(image, box_list, threshold=1):
     return heatmap, labels
     
 def get_cars(image, svc, X_scaler, 
-             color_space, hog_channel, spatial_size, hist_bins,
+             color_space, channel, spatial_size, hist_bins,
              heat_thres=4, heat_only=False):
     hot_windows = detect_cars_in_image(image, svc, X_scaler,
-                        color_space = color_space, hog_channel = hog_channel,
+                        color_space = color_space, channel = channel,
                         spatial_size = spatial_size, hist_bins = hist_bins)
     heatmap, labels = heat_map(image, hot_windows, heat_thres)
     draw_image = np.copy(image)

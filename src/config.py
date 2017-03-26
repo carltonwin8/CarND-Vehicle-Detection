@@ -56,7 +56,7 @@ images = [
 ]
 get_images = lambda x: get_option(images,x)
 
-hogc_ssahb_color = [
+channel_ssahb_color = [
     ([0, 1, 2, 3], [16, 32], ["RGB", "HSV", "LUV", "HLS", "YUV", "YCrCb"]), #1
     ([1], [16], ["LUV"]), #2
     ([0], [16], ["RGB"]), #3
@@ -66,8 +66,9 @@ hogc_ssahb_color = [
     ([0, 1, 2, 3], [16, 32], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #7 remove LUV since it blows up
     ([3], [16], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #8 
     ([0, 1, 2, 3], [32], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #9 remove LUV since it blows up
+    ([1], [16], ["RGB"]), #10
 ]
-get_hogc_ssahb_color = lambda x: get_option(hogc_ssahb_color,x)
+get_channel_ssahb_color = lambda x: get_option(channel_ssahb_color,x)
 
 color_conv_map = {
     'RGB': (cv2.COLOR_RGB2GRAY, cv2.COLOR_RGB2GRAY), # COLOR_RGB2GRAY is a dummy never used
