@@ -138,7 +138,7 @@ class detect():
                             spatial_size = spatial_size, hist_bins = hist_bins)
         self.windows.append(hot_windows)
         if len(self.windows) > self.history:
-            self.windows.pop()
+            self.windows.pop(0)
         hw = []
         for wind in self.windows:
             hw.extend(wind)
