@@ -411,19 +411,6 @@ def heat_map(image, box_list, threshold=1):
     labels = label(heatmap)
     return heatmap, labels
     
-def get_cars(image, svc, X_scaler, 
-             color_space, channel, spatial_size, hist_bins,
-             heat_thres=4, heat_only=False):
-    hot_windows = detect_cars_in_image(image, svc, X_scaler,
-                        color_space = color_space, channel = channel,
-                        spatial_size = spatial_size, hist_bins = hist_bins)
-    heatmap, labels = heat_map(image, hot_windows, heat_thres)
-    draw_image = np.copy(image)
-    if not heat_only:
-        draw_image = draw_boxes(draw_image, hot_windows, color=(0, 0, 255), thick=6)
-    draw_img = draw_labeled_bboxes(draw_image, labels)
-    return draw_img
-
 
 # Define a single function that can extract features using hog sub-sampling and make predictions
 def find_cars(img, svc, X_scaler, ystart=400, ystop=650, scale=1, spatial_size=(32,32), hist_bins=32, 

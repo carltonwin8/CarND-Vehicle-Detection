@@ -68,6 +68,7 @@ channel_ssahb_color = [
     ([0, 1, 2, 3], [32], ["RGB", "HSV", "HLS", "YUV", "YCrCb"]), #9 remove LUV since it blows up
     ([1], [16], ["RGB"]), #10
     ([1], [16], ["YCrCb"]), #11
+    ([0, 1, 2, 3], [16, 32], ["YCrCb"]), #12
 ]
 get_channel_ssahb_color = lambda x: get_option(channel_ssahb_color,x)
 

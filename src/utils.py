@@ -126,9 +126,33 @@ class detect():
             self.channel = channel
             self.ssahb = ssahb
             self.color = color
+            self.windows = []
+            self.history = 15 # 15 frame history
+            self.heat_thres = 4
+
+    def get_cars(self, image, svc, X_scaler, 
+             color_space, channel, spatial_size, hist_bins,
+             heat_only=False):
+        hot_windows = lf.detect_cars_in_image(image, svc, X_scaler,
+                            color_space = color_space, channel = channel,
+                            spatial_size = spatial_size, hist_bins = hist_bins)
+        self.windows.append(hot_windows)
+        if len(self.windows) > self.history:
+            self.windows.pop()
+        hw = []
+        for wind in self.windows:
+            hw.extend(wind)
+
+        heatmap, labels = lf.heat_map(image, hw, self.heat_thres*len(self.windows))
+        draw_image = np.copy(image)
+        if not heat_only:
+            draw_image = lf.draw_boxes(draw_image, hw, color=(0, 0, 255), thick=6)
+        draw_img = lf.draw_labeled_bboxes(draw_image, labels)
+        return draw_img
 
     def cars(self, img):
-        return lf.get_cars(img, self.svc, self.X_scaler, 
+
+        return self.get_cars(img, self.svc, self.X_scaler, 
                            self.color, self.channel, (self.ssahb, self.ssahb), self.ssahb, 
                            heat_only=self.heat_only)
 

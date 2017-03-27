@@ -63,9 +63,14 @@ def process_image(execute, imgfn, svc, X_scaler, show, save,
                   ssahb, channel, color, train_big):
     """Searches for cars in images while varying features"""
     image = mpimg.imread(imgfn)
-    cars = lf.get_cars(image, svc, X_scaler, 
-                       color, channel, (ssahb, ssahb), ssahb,
-                       heat_only=False)
+    if False: # select between algorithms
+        cars = lf.get_cars(image, svc, X_scaler, 
+                           color, channel, (ssahb, ssahb), ssahb,
+                           heat_only=False)
+    else:
+        cars = lf.find_cars(image, svc, X_scaler, 
+                           spatial_size=(ssahb, ssahb), hist_bins=ssahb)
+        
 #    hot_windows = lf.detect_cars_in_image(image, svc, X_scaler)
 #    threshold = 4
 #    heatmap, labels = lf.heat_map(image, hot_windows, threshold)
@@ -90,7 +95,7 @@ def process_images(execute, show=False, save=True):
                 tfn, dfn = utils.trained_fn(train_big, ssahb, channel, color)
                 svc, X_scaler = utils.load_trained_svm(tfn)
                 t1 = time.time()
-                imgfns = config.get_images(8)
+                imgfns = config.get_images(11)
                 for imgfn in imgfns:
                     t2 = time.time()
                     print(imgfn)
@@ -109,7 +114,7 @@ def main():
     select_example_images(False)
     gen_hog(False, save=True, show=False)    
     train_svm(False)
-    process_images(True, show=False, save=True)
+    process_images(True, show=True, save=False)
     
 if __name__ == "__main__":
     main()
