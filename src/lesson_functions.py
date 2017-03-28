@@ -111,8 +111,8 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
         # Call get_hog_features() with vis=False, feature_vec=True
             if channel == 'ALL':
                 hog_features = []
-                for channel in range(feature_image.shape[2]):
-                    hog_features.append(get_hog_features(feature_image[:,:,channel],
+                for ch in range(feature_image.shape[2]):
+                    hog_features.append(get_hog_features(feature_image[:,:,ch],
                                         orient, pix_per_cell, cell_per_block,
                                         vis=False, feature_vec=True))
                 hog_features = np.ravel(hog_features)
