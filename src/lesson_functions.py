@@ -450,6 +450,7 @@ def detect_cars_in_image(image,
     # image you are searching is a .jpg (scaled 0 to 255)
     if np.max(image) > 2: # assume jpg
         image = image.astype(np.float32)/255
+    xy_windows = [(100, 100),(150,150)]   
     xy_overlap=(0.75, 0.75)
     #xy_overlap=(0.8, 0.8)
     windows = []
