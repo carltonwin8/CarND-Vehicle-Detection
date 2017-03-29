@@ -119,7 +119,7 @@ def check_singles(channels, ssahbs, colors):
     return check_single(channels), check_single(ssahbs), check_single(colors)
 
 class detect():
-    def __init__(self, channel, ssahb, color, train_big, heat_only):
+    def __init__(self, channel, ssahb, color, train_big, heat_only, xy_windows):
             tfn, dfn = trained_fn(train_big, ssahb, channel, color)
             self.svc, self.X_scaler = load_trained_svm(tfn)
             self.heat_only = heat_only
@@ -128,14 +128,17 @@ class detect():
             self.color = color
             self.windows = []
             self.history = 15 # 15 frame history
-            self.heat_thres = 4
+            self.heat_thres = 2
+            self.xy_windows = xy_windows
 
-    def get_cars(self, image, svc, X_scaler, 
-             color_space, channel, spatial_size, hist_bins,
-             heat_only=False):
-        hot_windows = lf.detect_cars_in_image(image, svc, X_scaler,
-                            color_space = color_space, channel = channel,
-                            spatial_size = spatial_size, hist_bins = hist_bins)
+
+    def get_cars(self, image):
+
+        hot_windows = lf.detect_cars_in_image(image, self.svc, self.X_scaler,
+                            color_space = self.color, channel = self.channel,
+                            spatial_size = (self.ssahb, self.ssahb), 
+                            hist_bins = self.ssahb, xy_windows = self.xy_windows)
+
         self.windows.append(hot_windows)
         if len(self.windows) > self.history:
             self.windows.pop(0)
@@ -145,16 +148,10 @@ class detect():
 
         heatmap, labels = lf.heat_map(image, hw, self.heat_thres*len(self.windows))
         draw_image = np.copy(image)
-        if not heat_only:
+        if not self.heat_only:
             draw_image = lf.draw_boxes(draw_image, hw, color=(0, 0, 255), thick=6)
         draw_img = lf.draw_labeled_bboxes(draw_image, labels)
         return draw_img
-
-    def cars(self, img):
-
-        return self.get_cars(img, self.svc, self.X_scaler, 
-                           self.color, self.channel, (self.ssahb, self.ssahb), self.ssahb, 
-                           heat_only=self.heat_only)
 
 class time_log():
     def __init__(self,tlog):
@@ -201,9 +198,9 @@ def trained_fn(train_big, ssahb, channel, color):
     fn = config.train_dir + tfn
     return fn, tfn
     
-def save_fn(train_big, ssahb, channel, color, fn):
-    fnp = '_{}_s{}_h{}_{}.'.format('b' if train_big else 's',
-            ssahb, channel, color)
+def save_fn(train_big, ssahb, channel, color, ss, fn):
+    fnp = '_{}_s{}_c{}_{}_{}.'.format('b' if train_big else 's',
+            ssahb, channel, color, 'ss' if ss else 'nss')
     base, ext = fn.split('/')[-1].split('.')
     return config.img_out_dir + base + fnp + ext
 
@@ -280,4 +277,6 @@ def check_md5sum():
 
 
 #check_md5sum() # uncomment and run this file to get checksums
+
+
     

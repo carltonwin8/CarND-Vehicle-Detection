@@ -85,3 +85,15 @@ color_conv_map = {
     'YUV': (cv2.COLOR_RGB2YUV, cv2.COLOR_YUV2RGB),
     'YCrCb': (cv2.COLOR_RGB2YCrCb, cv2.COLOR_YCrCb2RGB)      
 }
+
+xy_windows = [
+    [[64,64]], #1
+    [[128,128]], #2
+    [[64,64], [128,128]], #3
+    [[100,100]], #4
+    [[150,150]], #5
+    [[100,100], [150,150]], #6
+    [[150,150]], #7
+]
+get_xy_windows = lambda x: get_option(xy_windows,x)
+

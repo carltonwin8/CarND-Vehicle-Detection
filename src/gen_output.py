@@ -13,6 +13,7 @@ import config
 import lesson_functions as lf
 import cv2
 import time
+import numpy as np
 
 def select_example_images(execute):
     """Selects and example image to work with"""
@@ -59,34 +60,36 @@ def train_svm(execute):
           ', extract & scale features and train the SVC')
     utils.save_trained_svm(svc, X_scaler)
 
-def process_image(execute, imgfn, svc, X_scaler, show, save,
-                  ssahb, channel, color, train_big):
+def process_image(imgfn, svc, X_scaler,
+                  ssahb, channel, color, train_big, dc, heat_only, ss):
     """Searches for cars in images while varying features"""
     image = mpimg.imread(imgfn)
-    if False: # select between algorithms
-        cars = lf.get_cars(image, svc, X_scaler, 
-                           color, channel, (ssahb, ssahb), ssahb,
-                           heat_only=False)
-    else:
-        cars = lf.find_cars(image, svc, X_scaler, 
+    
+    if ss: # select subsampeling algorithm
+        heat_thres = 2
+        windows = lf.find_cars(image, svc, X_scaler, 
                            spatial_size=(ssahb, ssahb), hist_bins=ssahb)
-        
+        heatmap, labels = lf.heat_map(image, windows, heat_thres)
+        cars = np.copy(image)
+        if not heat_only:
+            cars = lf.draw_boxes(cars, windows, color=(0, 0, 255), thick=6)
+        cars = lf.draw_labeled_bboxes(cars, labels)
+    else:
+        cars = dc.get_cars(image)
 #    hot_windows = lf.detect_cars_in_image(image, svc, X_scaler)
 #    threshold = 4
 #    heatmap, labels = lf.heat_map(image, hot_windows, threshold)
-    if show:
-        plt.imshow(cars)
-        plt.show()
-    if save:
-        fn = utils.save_fn(train_big, ssahb, channel, color, imgfn)
-        cv2.imwrite(fn, cars)
+    return cars
                             
 
         
 def process_images(execute, show=False, save=True):
     """Searches for cars in images while varying features"""
     channels, ssahbs, colors = config.get_channel_ssahb_color(15)
-    
+    imgfns = config.get_images(1)
+    heat_only = False
+    xy_windows = config.get_xy_windows(1)
+
     t0 = time.time()
     for ssahb in ssahbs:
         for channel in channels:
@@ -94,15 +97,32 @@ def process_images(execute, show=False, save=True):
                 train_big = True
                 tfn, dfn = utils.trained_fn(train_big, ssahb, channel, color)
                 svc, X_scaler = utils.load_trained_svm(tfn)
+                dc = utils.detect(channel, ssahb, color, train_big, heat_only,
+                                  xy_windows)
                 t1 = time.time()
-                imgfns = config.get_images(11)
                 for imgfn in imgfns:
-                    t2 = time.time()
                     print(imgfn)
-                    process_image(execute, imgfn, svc, X_scaler, show, save,
-                                  ssahb, channel, color, train_big)
-                    t3 = time.time()
-                    print('{} Seconds to process {} with {}'.format(round(t3-t2, 1), imgfn, dfn))    
+                    for ss in [False]:
+                        t2 = time.time()
+                        cars = process_image(imgfn, svc, X_scaler,
+                                      ssahb, channel, color, train_big, dc, 
+                                      heat_only, ss)
+                        if show:
+                            plt.imshow(cars)
+                            plt.show()
+                        if save:
+                            fn = utils.save_fn(train_big, ssahb, channel, color, ss, imgfn)
+                            cv2.imwrite(fn, cv2.cvtColor(cars, cv2.COLOR_BGR2RGB))
+                                    
+                        t3 = time.time()
+                        fmtstr = '{} Seconds to process {} with {} and ss ({})'
+                        print(fmtstr.format(round(t3-t2, 1), imgfn, dfn, ss))    
+                        if ss:
+                            print(lf.log.ss.windows[0:5])
+                            print(lf.log.ss.hot_windows[0:5])
+                        else:
+                            print(lf.log.nss.windows[0:5])
+                            print(lf.log.nss.hot_windows[0:5])
                 print('{} Seconds to process {} images'.format(round(t3-t1, 1), len(imgfns)))
     fmt_str = '{} Seconds for {} image in {}, {}, {}.'
     print(fmt_str.format(round(t3-t0, 1), len(imgfns), channels, ssahbs, colors))    
@@ -112,9 +132,9 @@ def main():
     Description
     """
     select_example_images(False)
-    gen_hog(False, save=True, show=False)    
+    gen_hog(False, save=False, show=False)    
     train_svm(False)
-    process_images(True, show=True, save=False)
+    process_images(True, show=False, save=True)
     
 if __name__ == "__main__":
     main()
