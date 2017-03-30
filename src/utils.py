@@ -119,7 +119,8 @@ def check_singles(channels, ssahbs, colors):
     return check_single(channels), check_single(ssahbs), check_single(colors)
 
 class detect():
-    def __init__(self, channel, ssahb, color, train_big, heat_only, xy_windows):
+    def __init__(self, channel, ssahb, color, train_big, heat_only, 
+                 xy_windows, subsample):
             tfn, dfn = trained_fn(train_big, ssahb, channel, color)
             self.svc, self.X_scaler = load_trained_svm(tfn)
             self.heat_only = heat_only
@@ -130,14 +131,22 @@ class detect():
             self.history = 15 # 15 frame history
             self.heat_thres = 2
             self.xy_windows = xy_windows
+            self.subsample = subsample
 
 
     def get_cars(self, image):
-
-        hot_windows = lf.detect_cars_in_image(image, self.svc, self.X_scaler,
-                            color_space = self.color, channel = self.channel,
-                            spatial_size = (self.ssahb, self.ssahb), 
-                            hist_bins = self.ssahb, xy_windows = self.xy_windows)
+        hot_windows = []
+        if self.subsample:
+            scales = [1, 1.5]
+            for scale in scales:
+                hot_windows.extend(lf.find_cars(image, self.svc, self.X_scaler, 
+                                   spatial_size=(self.ssahb, self.ssahb), 
+                                   hist_bins=self.ssahb, scale=scale))
+        else:
+            hot_windows.extend(lf.detect_cars_in_image(image, self.svc, self.X_scaler,
+                                color_space = self.color, channel = self.channel,
+                                spatial_size = (self.ssahb, self.ssahb), 
+                                hist_bins = self.ssahb, xy_windows = self.xy_windows))
 
         self.windows.append(hot_windows)
         if len(self.windows) > self.history:

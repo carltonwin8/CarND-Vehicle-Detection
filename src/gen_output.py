@@ -67,8 +67,12 @@ def process_image(imgfn, svc, X_scaler,
     
     if ss: # select subsampeling algorithm
         heat_thres = 2
-        windows = lf.find_cars(image, svc, X_scaler, 
-                           spatial_size=(ssahb, ssahb), hist_bins=ssahb)
+        scales = [1, 1.5]
+        windows = []
+        for scale in scales:
+            windows.extend(lf.find_cars(image, svc, X_scaler, 
+                               spatial_size=(ssahb, ssahb), hist_bins=ssahb,
+                               scale=scale))
         heatmap, labels = lf.heat_map(image, windows, heat_thres)
         cars = np.copy(image)
         if not heat_only:
@@ -85,8 +89,8 @@ def process_image(imgfn, svc, X_scaler,
         
 def process_images(execute, show=False, save=True):
     """Searches for cars in images while varying features"""
-    channels, ssahbs, colors = config.get_channel_ssahb_color(19)
-    imgfns = config.get_images(1)
+    channels, ssahbs, colors = config.get_channel_ssahb_color(15)
+    imgfns = config.get_images(8)
     heat_only = False
     train_big = True
     xy_windows = config.get_xy_windows(1)
@@ -102,7 +106,7 @@ def process_images(execute, show=False, save=True):
                 t1 = time.time()
                 for imgfn in imgfns:
                     print(imgfn)
-                    for ss in [True, False]:
+                    for ss in [True]:
                         t2 = time.time()
                         cars = process_image(imgfn, svc, X_scaler,
                                       ssahb, channel, color, train_big, dc, 
@@ -134,7 +138,7 @@ def main():
     select_example_images(False)
     gen_hog(False, save=False, show=False)    
     train_svm(False)
-    process_images(True, show=False, save=True)
+    process_images(True, show=True, save=False)
     
 if __name__ == "__main__":
     main()

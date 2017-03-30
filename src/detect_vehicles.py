@@ -20,14 +20,15 @@ def video(args):
     channel, ssahb, color = utils.check_singles(channels, ssahbs, colors)
     heat_only = False
     bs = args.ds=="big"
-    detect = utils.detect(channel, ssahb, color, bs, heat_only)
+    subsample = True
+    detect = utils.detect(channel, ssahb, color, bs, heat_only, [], subsample)
     
     for video_in in videos_in:
         video_out = utils.get_video_out(video_in, channel, ssahb, color, bs)
         print("From =>", video_in, "To =>", video_out)
 
         clip2 = VideoFileClip(video_in)
-        clip = clip2.fl_image(detect.cars)
+        clip = clip2.fl_image(detect.get_cars)
         clip.write_videofile(video_out, audio=False)
 
 def train(args):
