@@ -74,6 +74,8 @@ channel_ssahb_color = [
     ([3], [32], ["YCrCb"]), #15
     ([3], [32], ["RGB"]), #16
     ([3], [16], ["RGB"]), #17
+    ([3], [16], ["YCrCb"]), #18
+    ([3], [16, 32], ["YCrCb"]), #19
 ]
 get_channel_ssahb_color = lambda x: get_option(channel_ssahb_color,x)
 

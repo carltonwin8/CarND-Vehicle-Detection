@@ -85,16 +85,16 @@ def process_image(imgfn, svc, X_scaler,
         
 def process_images(execute, show=False, save=True):
     """Searches for cars in images while varying features"""
-    channels, ssahbs, colors = config.get_channel_ssahb_color(15)
+    channels, ssahbs, colors = config.get_channel_ssahb_color(19)
     imgfns = config.get_images(1)
     heat_only = False
+    train_big = True
     xy_windows = config.get_xy_windows(1)
 
     t0 = time.time()
     for ssahb in ssahbs:
         for channel in channels:
             for color in colors:
-                train_big = True
                 tfn, dfn = utils.trained_fn(train_big, ssahb, channel, color)
                 svc, X_scaler = utils.load_trained_svm(tfn)
                 dc = utils.detect(channel, ssahb, color, train_big, heat_only,
@@ -102,7 +102,7 @@ def process_images(execute, show=False, save=True):
                 t1 = time.time()
                 for imgfn in imgfns:
                     print(imgfn)
-                    for ss in [False]:
+                    for ss in [True, False]:
                         t2 = time.time()
                         cars = process_image(imgfn, svc, X_scaler,
                                       ssahb, channel, color, train_big, dc, 
