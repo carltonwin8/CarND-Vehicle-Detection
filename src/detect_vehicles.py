@@ -21,10 +21,14 @@ def video(args):
     heat_only = False
     bs = args.ds=="big"
     subsample = True
-    detect = utils.detect(channel, ssahb, color, bs, heat_only, [], subsample)
+    heat_threshold = args.thresh
+    history = 20
+    detect = utils.detect(channel, ssahb, color, bs, heat_only, [], subsample, 
+                          heat_threshold, history)
     
     for video_in in videos_in:
-        video_out = utils.get_video_out(video_in, channel, ssahb, color, bs)
+        video_out = utils.get_video_out(video_in, channel, ssahb, color, bs,
+                                        heat_threshold, history)
         print("From =>", video_in, "To =>", video_out)
 
         clip2 = VideoFileClip(video_in)
@@ -46,6 +50,8 @@ def main():
     parser_a.set_defaults(func=video)
     parser_a.add_argument('-i', '--id', help="video sequence", required=True, type=int, 
                           choices=range(1, len(config.videos) + 1))
+    parser_a.add_argument('-t', '--thresh', help="threshold", required=True, 
+                          type=int)
 
     parser_b = subparsers.add_parser('train', help='train the classifier')
     parser_b.set_defaults(func=train)

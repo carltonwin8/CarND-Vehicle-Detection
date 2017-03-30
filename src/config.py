@@ -99,3 +99,8 @@ xy_windows = [
 ]
 get_xy_windows = lambda x: get_option(xy_windows,x)
 
+threshold = [ # start, increment, max
+    [[14, 16, 18]], #1
+]
+get_threshold = lambda x: get_option(threshold,x)
+

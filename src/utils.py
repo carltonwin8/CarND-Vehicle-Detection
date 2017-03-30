@@ -82,10 +82,10 @@ def load_trained_svm(fn):
     pkl = pickle.load(open(fn, "rb"))
     return pkl["svc"], pkl["X_scaler"]
 
-def get_video_out(v_in, channel, ssahb, color, bs):
+def get_video_out(v_in, channel, ssahb, color, bs, thres, history):
     file, ext = v_in.split('/')[-1].split('.')
-    return '{}{}_{}_ssahb{}_hc{}_{}.{}'.format(config.video_out_dir, file,
-            "b" if bs else 's', ssahb, channel, color, ext)
+    return '{}{}_{}_ssahb{}_hc{}_{}_t{}f{}.{}'.format(config.video_out_dir, file,
+            "b" if bs else 's', ssahb, channel, color, thres, history, ext)
 
 class car():
     def __init__(self, img, car, y_top, x, y):
@@ -120,7 +120,7 @@ def check_singles(channels, ssahbs, colors):
 
 class detect():
     def __init__(self, channel, ssahb, color, train_big, heat_only, 
-                 xy_windows, subsample):
+                 xy_windows, subsample, heat_thres, history):
             tfn, dfn = trained_fn(train_big, ssahb, channel, color)
             self.svc, self.X_scaler = load_trained_svm(tfn)
             self.heat_only = heat_only
@@ -128,8 +128,8 @@ class detect():
             self.ssahb = ssahb
             self.color = color
             self.windows = []
-            self.history = 15 # 15 frame history
-            self.heat_thres = 2
+            self.history = history
+            self.heat_thres = heat_thres
             self.xy_windows = xy_windows
             self.subsample = subsample
 
@@ -155,7 +155,7 @@ class detect():
         for wind in self.windows:
             hw.extend(wind)
 
-        heatmap, labels = lf.heat_map(image, hw, self.heat_thres*len(self.windows))
+        heatmap, labels = lf.heat_map(image, hw, self.heat_thres)
         draw_image = np.copy(image)
         if not self.heat_only:
             draw_image = lf.draw_boxes(draw_image, hw, color=(0, 0, 255), thick=6)
