@@ -23,8 +23,9 @@ vehicle = output_dir + _vehicle
 get_hog_fn = lambda name: name.split('.')[0] + '_hog.' + name.split('.')
 get_vehicle_hog = lambda: get_hog_fn(_vehicle)
 get_not_vehicle_hog = lambda: get_hog_fn(_not_vehicle)
+
 get_option = lambda opts, i: opts[i -1 if i < len(opts) else len(opts) - 1]
-get_option.__doc__ = "Index into an array 1 based with overflow protection"
+"""Index into an array 1 based with overflow protection"""
 
 videos = [
     ["../../in/project_video_1s.mp4"], #1
@@ -77,6 +78,7 @@ channel_ssahb_color = [
     ([3], [16], ["YCrCb"]), #18
     ([3], [16, 32], ["YCrCb"]), #19
 ]
+
 get_channel_ssahb_color = lambda x: get_option(channel_ssahb_color,x)
 get_channel_ssahb_color.__doc__ = "Feature combinations tested"
 

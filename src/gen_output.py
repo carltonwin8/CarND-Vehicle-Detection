@@ -102,7 +102,7 @@ def process_images(execute, show=False, save=True):
                 tfn, dfn = utils.trained_fn(train_big, ssahb, channel, color)
                 svc, X_scaler = utils.load_trained_svm(tfn)
                 dc = utils.detect(channel, ssahb, color, train_big, heat_only,
-                                  xy_windows)
+                                  xy_windows, True, 2, 1)
                 t1 = time.time()
                 for imgfn in imgfns:
                     print(imgfn)
@@ -138,7 +138,7 @@ def main():
     select_example_images(False)
     gen_hog(False, save=False, show=False)    
     train_svm(False)
-    process_images(True, show=True, save=False)
+    process_images(True, show=False, save=True)
     
 if __name__ == "__main__":
     main()
