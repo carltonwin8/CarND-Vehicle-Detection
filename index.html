@@ -57,10 +57,10 @@
 <a id="user-content-vehicle-detection-project" class="anchor" href="#vehicle-detection-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vehicle Detection Project</h1>
 
 <p>The notes for this project are best viewed on line at the
-<a href="https://github.com/carltonwin8/CarND-Vehicle-Dection">github repo</a>.
-It is easier to follow the link to the source code referenced in this documentation.
+<a href="https://github.com/carltonwin8/CarND-Vehicle-Detection">github repo</a>.
+It is easier to follow the links to the source code referenced in this documentation.
 This readme is my completion of the Udacity project template provided at
-<a href="https://github.com/udacity/CarND-Vehicle-Dection">this repo</a>.</p>
+<a href="https://github.com/udacity/CarND-Vehicle-Detection">this repo</a>.</p>
 
 <p>The project code is developed using the
 <a href="https://pythonhosted.org/spyder/">spyder IDE</a>
@@ -78,11 +78,11 @@ and used to generate the images used for the documentation.</li>
 <li>
 <a href="_modules/utils.html">utils.py</a>
 and
-<a href="_modules/config.html">config.py</a>
+<a href="_modules/config.html">config.py</a> -
 Utility procedures and setup information.</li>
 <li>
 <a href="_modules/lesson_functions.html">lesson_functions.py</a> -
-Module containing procedures provide in the
+The module that contains the procedures provided in the
 <a href="https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013">Udacity Self-Driving Car Engineer Nanodegree</a>
 lecture notes.</li>
 </ul>
@@ -90,7 +90,7 @@ lecture notes.</li>
 <p>The following steps are done to complete this project.</p>
 
 <ul>
-<li>A Linear SVM classifier is trained on a set of images labeled as car and not-cars.</li>
+<li>A Linear SVC classifier is trained on a set of images labeled as cars and not-cars.</li>
 <li>A feature vector made up of the following features is used for training.
 
 <ul>
@@ -100,18 +100,16 @@ lecture notes.</li>
 </ul>
 </li>
 <li>The feature vector is normalized and randomized before training and testing.</li>
-<li>Vehicle are identify in an image by using a sliding-window technique to segment
+<li>Vehicles are identify in an image by using a sliding-window technique to segment
 the image into blocks that are fed into the trained classifier.</li>
 <li>The above process is applied to the images in a video stream to identify the cars.</li>
-<li>A head map identifying the locations of cars by summing all the blocks within
+<li>A heat map identifies the locations of cars by summing all the blocks within
 an image that is identified as a car.</li>
-<li>The head map is also calculated from the last n fames of the image in order to
+<li>The heat map is also calculated from the last 20 fames of the image in order to
 reject outliers and follow detected vehicles.</li>
 <li>Bounding boxes are drawn around detected vehicles.</li>
 <li>The above procedure was run on
-<a href="test_video.mp4">test_video.mp4</a>
-and also on
-<a href="project_video.mp4">project_video.mp4</a>
+<a href="./project_video.mp4">project_video.mp4</a>
 </li>
 </ul>
 
@@ -120,21 +118,19 @@ and also on
 
 <p>The
 <a href="_modules/lesson_functions.html#get_hog_features">get_hog_features</a>
-function was called in order to generate the HOG images for the
-for one of each of the <code>vehicle</code> and <code>non-vehicle</code> classes.
+function was called in order to generate the HOG images for an image<br>
+in the <code>vehicle</code> and <code>non-vehicle</code> class.
 The
 <a href="_modules/gen_output.html#select_example_images">select_example_images</a>
 function was use to select the middle images from the small training data set
-in order to get a feel for what the <code>skimage.hog()</code> output looks like.
+in order to get a feel for what the <code>skimage.feature.hog()</code> output looks like.
 The
 <a href="_modules/gen_output.html#gen_hog">gen_hog</a>
-function called the
+function calls the
 <a href="_modules/lesson_functions.html#get_hog_features">get_hog_features</a>
-function, noted above, with the default values show in the
-<a href="_modules/config.html#params.hog">params.hog</a>
-configuration.</p>
-
-<p>Here is an example using the <code>YCrCb</code> color space and HOG parameters of <code>orientations=8</code>, <code>pixels_per_cell=(8, 8)</code> and <code>cells_per_block=(2, 2)</code>:</p>
+function to generate the images below.
+The following example images are converted to gray scale and the HOG features are detected
+with the following parameters <code>orientations=9</code>, <code>pixels_per_cell=(8, 8)</code> and <code>cells_per_block=(2, 2)</code>.</p>
 
 <table width="100%">
 <tr width="100%">
@@ -151,85 +147,156 @@ configuration.</p>
 </tr>
 </table>
 
-<p>I started by reading in all the <code>vehicle</code> and <code>non-vehicle</code> images.
-I then explored different color spaces and different <code>skimage.hog()</code>
-parameters (<code>orientations</code>, <code>pixels_per_cell</code>, and <code>cells_per_block</code>).</p>
+<p>The
+<a href="_modules/lesson_functions.html#train_svm">train_svm</a>
+function used the hog parameters noted above to train and test a LinearSVC.
+The SVC was trained by reading in the <code>vehicle</code> and <code>non-vehicle</code> images
+and extracting the features, <em>scaling</em> them and then fitting them to the
+classifier.
+The test data was run through the classifier in order to see the accuracy
+of the predictions based on the hog parameters selected.
+The predictions for the HOG parameters noted above was determined to be
+adequate when used with the large training data set.</p>
 
-<h4>
-<a id="user-content-2-explain-how-you-settled-on-your-final-choice-of-hog-parameters" class="anchor" href="#2-explain-how-you-settled-on-your-final-choice-of-hog-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Explain how you settled on your final choice of HOG parameters.</h4>
-
-<p>I tried various combinations of parameters and...</p>
-
-<h4>
-<a id="user-content-3-describe-how-and-identify-where-in-your-code-you-trained-a-classifier-using-your-selected-hog-features-and-color-features-if-you-used-them" class="anchor" href="#3-describe-how-and-identify-where-in-your-code-you-trained-a-classifier-using-your-selected-hog-features-and-color-features-if-you-used-them" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).</h4>
-
-<p>I trained a linear SVM using...</p>
-
-<h3>
-<a id="user-content-sliding-window-search" class="anchor" href="#sliding-window-search" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sliding Window Search</h3>
-
-<h4>
-<a id="user-content-1-describe-how-and-identify-where-in-your-code-you-implemented-a-sliding-window-search--how-did-you-decide-what-scales-to-search-and-how-much-to-overlap-windows" class="anchor" href="#1-describe-how-and-identify-where-in-your-code-you-implemented-a-sliding-window-search--how-did-you-decide-what-scales-to-search-and-how-much-to-overlap-windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?</h4>
-
-<p>I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):</p>
-
-<p>![alt text][image3]</p>
-
-<h4>
-<a id="user-content-2-show-some-examples-of-test-images-to-demonstrate-how-your-pipeline-is-working--what-did-you-do-to-optimize-the-performance-of-your-classifier" class="anchor" href="#2-show-some-examples-of-test-images-to-demonstrate-how-your-pipeline-is-working--what-did-you-do-to-optimize-the-performance-of-your-classifier" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?</h4>
-
-<p>Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:</p>
+<p>Along with the HOG features, a
+<a href="_modules/lesson_functions.html#color_hist">color histogram</a>
+and
+<a href="_modules/lesson_functions.html#bin_spatial">spatial binning</a>
+of the image were
+<a href="_modules/lesson_functions.html#single_img_features">combined</a>
+and used as features.</p>
 
 <h2>
-<a id="user-content-alt-textimage4" class="anchor" href="#alt-textimage4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>![alt text][image4]</h2>
+<a id="user-content-sliding-window-search" class="anchor" href="#sliding-window-search" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sliding Window Search</h2>
+
+<p>A sliding window was used on the test images in order to detect the cars.
+The sub-sampling, of the full image HOG features, was used on the test
+images in oder to speed up the image detection.
+The
+<a href="_modules/lesson_functions.html#find_cars">find_cars</a>
+function shows how the sub-sampling was used to determine the bounding box for the cars
+using the parameter that were determined in the previous section.
+The <code>cells_per_step</code> parameter was used to determine the overlap between the
+sliding windows.</p>
+
+<p>The
+<a href="_modules/utils.html#detect.get_cars">get_cars</a>
+function calls the
+<a href="_modules/lesson_functions.html#find_cars">find_cars</a>
+functions twice with a scale of 1 and 1.5 in order to detect
+cars near and far.
+Other values of scale can be used but were not necessary
+in order to detect the cars correctly for the project video provided.
+The
+<a href="_modules/utils.html#detect.get_cars">get_cars</a>
+function also averaged the cars detected over a number of frames
+and will be explained in the next section.
+To improve the reliability of the classifier a number of feature combinations
+<a href="_modules/gen_output.html#process_images">were tested</a>
+with the test images provided.
+The
+<a href="_modules/config.html">configuration file</a>
+shows some of the features that were tested out.</p>
+
+<p>After the experimentation noted above the following features were selected for the feature vector:</p>
+
+<ul>
+<li>a YCrCb 3-channel HOG features at two <em>scales</em>,</li>
+<li>a 32x32 spatially binned color features and</li>
+<li>a 32 bin histograms of 255 color features.</li>
+</ul>
+
+<p>Heat map thresholding was used to reduce the multiple detects caused by overlapping
+sliding windows and also by overlapping windows due to multiple scales.
+The example images below show
+the multiple detects (blue box) and the heat map threshold reduced to a single detect (white box).</p>
+
+<table>
+<thead>
+<tr>
+<th>test1.jpg</th>
+<th>test3.jpg</th>
+<th>test4.jpg</th>
+<th>test4.jpg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="output_images/test1_b_s32_c3_YCrCb_ss.jpg" target="_blank"><img src="output_images/test1_b_s32_c3_YCrCb_ss.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/test3_b_s32_c3_YCrCb_ss.jpg" target="_blank"><img src="output_images/test3_b_s32_c3_YCrCb_ss.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/test4_b_s32_c3_YCrCb_ss.jpg" target="_blank"><img src="output_images/test4_b_s32_c3_YCrCb_ss.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/test5_b_s32_c3_YCrCb_ss.jpg" target="_blank"><img src="output_images/test5_b_s32_c3_YCrCb_ss.jpg" alt="" style="max-width:100%;"></a></td>
+</tr>
+</tbody>
+</table>
 
 <h3>
 <a id="user-content-video-implementation" class="anchor" href="#video-implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Video Implementation</h3>
 
-<h4>
-<a id="user-content-1-provide-a-link-to-your-final-video-output--your-pipeline-should-perform-reasonably-well-on-the-entire-project-video-somewhat-wobbly-or-unstable-bounding-boxes-are-ok-as-long-as-you-are-identifying-the-vehicles-most-of-the-time-with-minimal-false-positives" class="anchor" href="#1-provide-a-link-to-your-final-video-output--your-pipeline-should-perform-reasonably-well-on-the-entire-project-video-somewhat-wobbly-or-unstable-bounding-boxes-are-ok-as-long-as-you-are-identifying-the-vehicles-most-of-the-time-with-minimal-false-positives" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)</h4>
+<p>Here is a <a href="./output_images/project_video.mp4">local link to the result video</a>
+and a <a href="https://youtu.be/WdwQNmM1NbA">youtube video link</a>.</p>
 
-<p>Here's a <a href="./project_video.mp4">link to my video result</a></p>
+<p>In order to create the video shown at the link above, you first train and save the classifier via:</p>
 
-<h4>
-<a id="user-content-2-describe-how-and-identify-where-in-your-code-you-implemented-some-kind-of-filter-for-false-positives-and-some-method-for-combining-overlapping-bounding-boxes" class="anchor" href="#2-describe-how-and-identify-where-in-your-code-you-implemented-some-kind-of-filter-for-false-positives-and-some-method-for-combining-overlapping-bounding-boxes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.</h4>
+<pre><code>./detect_vehicles.py -d big -c 15 train
+</code></pre>
 
-<p>I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used <code>scipy.ndimage.measurements.label()</code> to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  </p>
+<p>then you use the trained classifier on the project video by using the command shown below.</p>
 
-<p>Here's an example result showing the heatmap from a series of frames of video, the result of <code>scipy.ndimage.measurements.label()</code> and the bounding boxes then overlaid on the last frame of video:</p>
+<pre><code>./detect_vehicles.py -d big -c 15 video -i 7 -t 16
+</code></pre>
 
-<h3>
-<a id="user-content-here-are-six-frames-and-their-corresponding-heatmaps" class="anchor" href="#here-are-six-frames-and-their-corresponding-heatmaps" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Here are six frames and their corresponding heatmaps:</h3>
+<p>In the
+<a href="_modules/utils.html#detect.get_cars">get_cars</a>
+function the positions of the detections in each frame of the video
+are stored for 20 consecutive frames in a FIFO.
+A heat map is then created for the 20 frame history and a threshold of 16 is used
+to identify a vehicle's position and filter out the transient false positives.
+The <code>scipy.ndimage.measurements.label()</code> is used in the
+<a href="_modules/lesson_functions.html#heat_map">heat_map</a>
+function to identify individual cars in the heat map.
+A bounding box is drawn around the area where a car is detected.
+The images below show the operation of the algorithm.
+The blue boxes shows the detections over 20 frames and the white boxes
+are the ones actually drawn on the video because they surpass the heat threshold.</p>
 
-<p>![alt text][image5]</p>
-
-<h3>
-<a id="user-content-here-is-the-output-of-scipyndimagemeasurementslabel-on-the-integrated-heatmap-from-all-six-frames" class="anchor" href="#here-is-the-output-of-scipyndimagemeasurementslabel-on-the-integrated-heatmap-from-all-six-frames" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Here is the output of <code>scipy.ndimage.measurements.label()</code> on the integrated heatmap from all six frames:</h3>
-
-<p>![alt text][image6]</p>
-
-<h3>
-<a id="user-content-here-the-resulting-bounding-boxes-are-drawn-onto-the-last-frame-in-the-series" class="anchor" href="#here-the-resulting-bounding-boxes-are-drawn-onto-the-last-frame-in-the-series" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Here the resulting bounding boxes are drawn onto the last frame in the series:</h3>
-
-<p>![alt text][image7]</p>
-
-<hr>
-
-<h3>
-<a id="user-content-discussion" class="anchor" href="#discussion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Discussion</h3>
-
-<h4>
-<a id="user-content-1-briefly-discuss-any-problems--issues-you-faced-in-your-implementation-of-this-project--where-will-your-pipeline-likely-fail--what-could-you-do-to-make-it-more-robust" class="anchor" href="#1-briefly-discuss-any-problems--issues-you-faced-in-your-implementation-of-this-project--where-will-your-pipeline-likely-fail--what-could-you-do-to-make-it-more-robust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?</h4>
-
-<p>Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  </p>
+<table>
+<thead>
+<tr>
+<th>image004.jpg</th>
+<th>image005.jpg</th>
+<th>image005.jpg</th>
+<th>image007.jpg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="output_images/img004.jpg" target="_blank"><img src="output_images/img004.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/img005.jpg" target="_blank"><img src="output_images/img005.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/img006.jpg" target="_blank"><img src="output_images/img006.jpg" alt="" style="max-width:100%;"></a></td>
+<td><a href="output_images/img007.jpg" target="_blank"><img src="output_images/img007.jpg" alt="" style="max-width:100%;"></a></td>
+</tr>
+</tbody>
+</table>
 
 <h2>
-<a id="user-content-cj-notes-to-add" class="anchor" href="#cj-notes-to-add" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CJ Notes To add</h2>
+<a id="user-content-discussion" class="anchor" href="#discussion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Discussion</h2>
+
+<p>A major issue in this project, is that in order to adequately test all the
+possible parameters, that one can vary before and after training the classifier,
+takes quite a bit of compute time per iteration.</p>
+
+<p>Even with all that effort it is easy to see that this pipeline can fail if:</p>
 
 <ul>
-<li>Did not make use small boxes for scanning for cars because that
-means they are far away and are not a immediate concern</li>
+<li>there were extreme shadows</li>
+<li>the lighting condition varied from day to night or</li>
+<li>trees or shrubs are present on the side of the road.</li>
 </ul>
+
+<p>A straight forward way to improve this project is to test it with videos
+the have the properties noted above and tune the parameters
+for the highly changing environment.</p>
 
               </article>
             </div>

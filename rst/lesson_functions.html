@@ -53,6 +53,18 @@
 <p>This module contains procedures provide in the &#8220;Udacity Self-Driving Car Engineer
 Nanodegree&#8221; lecture notes. Some modifications were made.
 <a class="reference external" href="https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013">https://www.udacity.com/course/self-driving-car-engineer-nanodegree&#8211;nd013</a></p>
+<dl class="class">
+<dt id="lesson_functions.Log">
+<em class="property">class </em><code class="descclassname">lesson_functions.</code><code class="descname">Log</code><a class="reference internal" href="../_modules/lesson_functions.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.Log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="lesson_functions.Params">
+<em class="property">class </em><code class="descclassname">lesson_functions.</code><code class="descname">Params</code><a class="reference internal" href="../_modules/lesson_functions.html#Params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.Params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
 <dl class="function">
 <dt id="lesson_functions.add_heat">
 <code class="descclassname">lesson_functions.</code><code class="descname">add_heat</code><span class="sig-paren">(</span><em>heatmap</em>, <em>bbox_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#add_heat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.add_heat" title="Permalink to this definition">¶</a></dt>
@@ -78,13 +90,18 @@ Nanodegree&#8221; lecture notes. Some modifications were made.
 </dd></dl>
 
 <dl class="function">
+<dt id="lesson_functions.colorspace">
+<code class="descclassname">lesson_functions.</code><code class="descname">colorspace</code><span class="sig-paren">(</span><em>image</em>, <em>color_space</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#colorspace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.colorspace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="lesson_functions.convert_color">
 <code class="descclassname">lesson_functions.</code><code class="descname">convert_color</code><span class="sig-paren">(</span><em>img</em>, <em>conv='RGB2YCrCb'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#convert_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.convert_color" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="lesson_functions.detect_cars_in_image">
-<code class="descclassname">lesson_functions.</code><code class="descname">detect_cars_in_image</code><span class="sig-paren">(</span><em>image, svc, X_scaler, color_space='RGB', orient=9, pix_per_cell=8, cell_per_block=2, channel=0, spatial_size=(16, 16), hist_bins=16, spatial_feat=True, hist_feat=True, hog_feat=True, y_start_stop=[400, 650]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#detect_cars_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.detect_cars_in_image" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">detect_cars_in_image</code><span class="sig-paren">(</span><em>image, svc, X_scaler, color_space='RGB', orient=9, pix_per_cell=8, cell_per_block=2, channel=0, spatial_size=(16, 16), hist_bins=16, spatial_feat=True, hist_feat=True, hog_feat=True, y_start_stop=[400, 650], xy_windows=[(64, 64)]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#detect_cars_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.detect_cars_in_image" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -108,11 +125,6 @@ Nanodegree&#8221; lecture notes. Some modifications were made.
 <dl class="function">
 <dt id="lesson_functions.find_cars">
 <code class="descclassname">lesson_functions.</code><code class="descname">find_cars</code><span class="sig-paren">(</span><em>img</em>, <em>svc</em>, <em>X_scaler</em>, <em>ystart=400</em>, <em>ystop=650</em>, <em>scale=1</em>, <em>spatial_size=(32</em>, <em>32)</em>, <em>hist_bins=32</em>, <em>orient=9</em>, <em>pix_per_cell=8</em>, <em>cell_per_block=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#find_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.find_cars" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="lesson_functions.get_cars">
-<code class="descclassname">lesson_functions.</code><code class="descname">get_cars</code><span class="sig-paren">(</span><em>image</em>, <em>svc</em>, <em>X_scaler</em>, <em>color_space</em>, <em>channel</em>, <em>spatial_size</em>, <em>hist_bins</em>, <em>heat_thres=4</em>, <em>heat_only=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#get_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.get_cars" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -144,7 +156,7 @@ just for a single image rather than list of images</p>
 
 <dl class="function">
 <dt id="lesson_functions.slide_window">
-<code class="descclassname">lesson_functions.</code><code class="descname">slide_window</code><span class="sig-paren">(</span><em>img, x_start_stop=[None, None], y_start_stop=[None, None], xy_window=(64, 64), xy_overlap=(0.5, 0.5)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#slide_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.slide_window" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lesson_functions.</code><code class="descname">slide_window</code><span class="sig-paren">(</span><em>img, x_start_stop=[None, None], y_start_stop=[None, None], xy_window=(64, 64), xy_overlap=(0.75, 0.75)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lesson_functions.html#slide_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lesson_functions.slide_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define a function that takes an image,
 start and stop positions in both x and y,
 window size (x and y dimensions),

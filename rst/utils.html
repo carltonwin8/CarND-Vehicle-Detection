@@ -84,11 +84,11 @@
 
 <dl class="class">
 <dt id="utils.detect">
-<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">detect</code><span class="sig-paren">(</span><em>channel</em>, <em>ssahb</em>, <em>color</em>, <em>train_big</em>, <em>heat_only</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">detect</code><span class="sig-paren">(</span><em>channel</em>, <em>ssahb</em>, <em>color</em>, <em>train_big</em>, <em>heat_only</em>, <em>xy_windows</em>, <em>subsample</em>, <em>heat_thres</em>, <em>history</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
-<dt id="utils.detect.cars">
-<code class="descname">cars</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect.cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect.cars" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.detect.get_cars">
+<code class="descname">get_cars</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#detect.get_cars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.detect.get_cars" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -129,7 +129,7 @@
 
 <dl class="function">
 <dt id="utils.get_video_out">
-<code class="descclassname">utils.</code><code class="descname">get_video_out</code><span class="sig-paren">(</span><em>v_in</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_video_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_video_out" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">utils.</code><code class="descname">get_video_out</code><span class="sig-paren">(</span><em>v_in</em>, <em>channel</em>, <em>ssahb</em>, <em>color</em>, <em>bs</em>, <em>thres</em>, <em>history</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#get_video_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.get_video_out" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -145,7 +145,7 @@
 
 <dl class="function">
 <dt id="utils.save_fn">
-<code class="descclassname">utils.</code><code class="descname">save_fn</code><span class="sig-paren">(</span><em>train_big</em>, <em>ssahb</em>, <em>channel</em>, <em>color</em>, <em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#save_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.save_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">utils.</code><code class="descname">save_fn</code><span class="sig-paren">(</span><em>train_big</em>, <em>ssahb</em>, <em>channel</em>, <em>color</em>, <em>ss</em>, <em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils.html#save_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.save_fn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
