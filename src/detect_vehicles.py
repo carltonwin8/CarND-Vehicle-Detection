@@ -18,7 +18,7 @@ def video(args):
     
     channels, ssahbs, colors = config.get_channel_ssahb_color(args.cfg)
     channel, ssahb, color = utils.check_singles(channels, ssahbs, colors)
-    heat_only = False
+    heat_only = True
     bs = args.ds=="big"
     subsample = True
     heat_threshold = args.thresh

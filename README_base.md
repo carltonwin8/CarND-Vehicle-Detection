@@ -38,12 +38,10 @@ The following steps are done to complete this project.
   - The above process is applied to the images in a video stream to identify the cars.
   - A head map identifying the locations of cars by summing all the blocks within
     an image that is identified as a car.
-  - The head map is also calculated from the last n fames of the image in order to
+  - The head map is also calculated from the last 20 fames of the image in order to
     reject outliers and follow detected vehicles.
   - Bounding boxes are drawn around detected vehicles.
   - The above procedure was run on
-    [test_video.mp4](test_video.mp4)
-    and also on
     [project_video.mp4](project_video.mp4)
 
 
@@ -56,16 +54,14 @@ for one of each of the `vehicle` and `non-vehicle` classes.
 The
 [select_example_images](_modules/gen_output.html#select_example_images)
 function was use to select the middle images from the small training data set
-in order to get a feel for what the `skimage.hog()` output looks like.
+in order to get a feel for what the `skimage.feature.hog()` output looks like.
 The
 [gen_hog](_modules/gen_output.html#gen_hog)
-function called the
+function calls the
 [get_hog_features](_modules/lesson_functions.html#get_hog_features)
-function, noted above, with the default values show in the
-[params.hog](_modules/config.html#params.hog)
-configuration.
-
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+function to generate the images below.
+The following example images are converted to gray scale and the HOG features are detected
+with the following parameters `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`.
 
 <table width="100%">
 <tr width="100%">
@@ -82,24 +78,43 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 </tr>
 </table>
 
-I started by reading in all the `vehicle` and `non-vehicle` images.
-I then explored different color spaces and different `skimage.hog()`
-parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).
+The
+[train_svm](_modules/lesson_functions.html#train_svm)
+function used the hog parameters noted above train and test a LinearSVC.
+The SVM was trained by reading in the `vehicle` and `non-vehicle` images
+and extracting the features, scaling them and then fitting them to the
+classifier.
+The test data was run through the classifier in order to see the accuracy
+of the predictions based on the hog parameters selected.  
+The predictions for the HOG parameters noted above was determined to be
+adequate when used with the large training data set.
 
-#### 2. Explain how you settled on your final choice of HOG parameters.
+Along with the HOG feature, a
+[color histogram](_modules/lesson_functions.html#color_hist)
+and
+[spatial binning](_modules/lesson_functions.html#color_hist)
+of the image were
+[combined](_modules/lesson_functions.html#single_image_features)
+used as features.
+A
+[number of feature combination](_modules/config.html#get_channel_ssahb_color)
+[were tested](_modules/gen_output.html#process_images)
+with the test images provided.
 
-I tried various combinations of parameters and...
+## Sliding Window Search
 
-#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+A sliding windows was used on the test images in order to detect images.
+Sub-sampling of the HOG feature was used on the test images in oder to
+speed up the image detection.
+The
+[find_cars](_modules/lesson_functions.html#find_cars)
+function show how the sub-sampling was used to determine the bounding box for the cars
+using the parameter that were determined in the previous section.
 
-I trained a linear SVM using...
-
-###Sliding Window Search
-
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
-
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
-
+The
+[get_cars](_modules/utils.html#get_cars) function
+called the
+[find_cars](_modules/lesson_functions.html#find_cars) functions
 ![alt text][image3]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
@@ -111,37 +126,55 @@ Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spat
 
 ### Video Implementation
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here is a [local link to the result video](./project_video.mp4)
+and a [youtube video link](https://youtu.be/WdwQNmM1NbA).
 
+In order to create the video shown at the link above you first train and save the classifier via:
+```
+./detect_vehicles.py -d big -c 15 train
+```
+then you use the trained classifier on the project video by using the command shown below.
+```
+./detect_vehicles.py -d big -c 15 video -i 7 -t 16
+```
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video.
+From the positive detections I created a heatmap and then thresholded that
+map to identify vehicle positions.  
+I then used `scipy.ndimage.measurements.label()` to identify
+individual blobs in the heatmap.  I then assumed each blob corresponded
+to a vehicle.
+I constructed bounding boxes to cover the area of each blob detected.  
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+Here's an example result showing the heatmap from a series of frames of video,
+the result of `scipy.ndimage.measurements.label()` and the bounding boxes
+then overlaid on the last frame of video:
 
 ### Here are six frames and their corresponding heatmaps:
 
 ![alt text][image5]
 
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
+### Here is the output of `scipy.ndimage.measurements.label()` on the
+integrated heatmap from all six frames:
 ![alt text][image6]
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
 ![alt text][image7]
 
+## Discussion
 
+The major issue in this project is adequately testing all the possible parameters
+one can vary before and after training the classifier takes quite a bit of
+compute time for each iteration and the possible combination are large.
 
----
+Even with all that effort it is easy to see that this pipeline can fail if:
 
-###Discussion
+  - there were extreme shadows
+  - the lighting condition varied from day to night or
+  - tree or shrubs are present on the side of the road.
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
-## CJ Notes To add
-
- - Did not make use small boxes for scanning for cars because that
-   means they are far away and are not a immediate concern
+A straight forward way to improve this project is to test it with videos
+the have the properties noted above and tune parameters before and after
+training for a highly changing environment.

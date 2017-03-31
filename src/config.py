@@ -78,6 +78,7 @@ channel_ssahb_color = [
     ([3], [16, 32], ["YCrCb"]), #19
 ]
 get_channel_ssahb_color = lambda x: get_option(channel_ssahb_color,x)
+get_channel_ssahb_color.__doc__ = "Feature combinations tested"
 
 color_conv_map = {
     'RGB': (cv2.COLOR_RGB2GRAY, cv2.COLOR_RGB2GRAY), # COLOR_RGB2GRAY is a dummy never used
